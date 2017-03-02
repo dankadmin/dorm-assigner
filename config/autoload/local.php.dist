@@ -1,0 +1,18 @@
+<?php
+
+return array(
+    'propel' => array(
+        'database' => array(
+            'connections' => array(
+                'default' => array(
+                    'host'     => 'HOST',
+                    'user'     => 'USER',
+                    'password' => 'PASSWORD',
+                ),
+                'DB_CONNECTION' => array(
+                    'dbname' => 'DB_CONNECTION'
+                ),
+            ),
+        ),
+    ),
+);

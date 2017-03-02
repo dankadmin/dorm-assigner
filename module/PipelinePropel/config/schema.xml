@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="jasonb_dorm" deafultIdMethod="native">
+    <table namespace="PipelinePropel" name="pillow" phpName="Pillow" idMethod="native">
+        <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10)" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="size" phpName="Size" type="ENUM" valueSet="king, queen, double, body" required="true" defaultValue="queen" />
+        <column name="loft" phpName="Loft" type="INTEGER" size="5" required="false" />
+        <column name="fill" phpName="Fill" type="VARCHAR" size="255" required="false" />
+        <column name="my_pillow" phpName="MyPillow" type="BOOLEAN" size="1" required="true"/>
+        <column name="bed_id" phpName="INTEGER" size="10" sqlType="int(10)" required="true" />"
+        <foreign-key foreignTable="bed" name="fk_pillow_bed1">
+            <reference local="bed_id" foreign="id" />
+        </foreign-key>
+        <behavior name="timestampable" />
+    </table>
+    <table namespace="PipelinePropel" name="pillow_case" phpName="PillowCase" idMethod="native">
+        <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10)" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="size" phpName="Size" type="ENUM" valueSet="king, queen, double, body" required="true" defautlValue="queen" />
+        <column name="color" phpName="Color" type="VARCHAR" size="255" required="true" />
+        <column name="pillow_id" phpName="PillowId" type="INTEGER" size="10" sqlType="int(10)" />
+        <foreign-key foreignTable="pillow" name="fk_pillow_case_pillow1">
+            <reference local="pillow_id" foreign="id" />
+        </foreign-key>
+        <behavior name="timestampable" />
+    </table>
+    <table namespace="PipelinePropel" name="bed" phpName="Bed" idMethod="native">
+        <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10)" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="name" phpName="Name" type="VARCHAR" size="255" required="true" />
+        <column name="size" phpName="Size" type="ENUM" valueSet="twin, double, queen, king" required="true" defaultValue="double" />
+        <column name="style" phpName="Style" type="VARCHAR" size="255" require="true" />
+        <column name="bunk_flag" phpName="BunkFlag" type="BOOLEAN" size="1" required="true" />
+        <behavior name="timestampable" />
+    </table>
+</database>

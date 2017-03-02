@@ -2,7 +2,9 @@
 
 return array(
     'modules' => array(
-        'Application'
+        'Application',
+        'ImhPropel',
+        'ZF\\DevelopmentMode'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
