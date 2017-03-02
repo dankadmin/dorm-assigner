@@ -4,7 +4,8 @@ return array(
     'modules' => array(
         'Application',
         'ImhPropel',
-        'ZF\\DevelopmentMode'
+        'ZF\\DevelopmentMode',
+        'PipelinePropel'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
