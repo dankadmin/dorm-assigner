@@ -13,6 +13,7 @@ components
 */*/test/data/*
 !*/*/test/data/fixtures
 data/*
+!data/.empty
 !data/migrations
 !data/cache/.gitkeep
 !data/*.sql
