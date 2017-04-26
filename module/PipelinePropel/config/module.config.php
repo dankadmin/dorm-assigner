@@ -8,19 +8,19 @@ return array(
         ),
         'database' => array(
             'connections' => array(
-                'jasonb_dorm' => array()
+                'timr_dorm' => array()
             )
         ),
         'runtime' => array(
-            'defaultConnection' => 'jasonb_dorm',
+            'defaultConnection' => 'timr_dorm',
             'connections'       => array(
-                'jasonb_dorm'
+                'timr_dorm'
             )
         ),
         'generator' => array(
-            'defaultConnection' => 'jasonb_dorm',
+            'defaultConnection' => 'timr_dorm',
             'connections' => array(
-                'jasonb_dorm'
+                'timr_dorm'
             )
         )
     )
