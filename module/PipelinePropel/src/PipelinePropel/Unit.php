@@ -17,4 +17,23 @@ use PipelinePropel\Base\Unit as BaseUnit;
 class Unit extends BaseUnit
 {
 
+    public function isGenderPermitted($gender) {
+        $rooms = $this->getRooms();
+        foreach ($rooms as $room) {
+            $roomAssignments = $room->getRoomAssignments();
+
+            foreach ($roomAssignments as  $roomAssignment) {
+                if ($roomAssignment->getStatus() === 'inactive') {
+                    continue;
+                }
+
+                if ($roomAssignment->getStudent()->getGender() !== $gender) {
+                    return false;
+                }
+            }   
+        }
+        
+        return true;    
+    }
+
 }
