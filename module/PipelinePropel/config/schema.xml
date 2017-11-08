@@ -1,123 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<database name="timr_dorm" defaultIdMethod="native">
-
-<table namespace="PipelinePropel" name="student" phpName="Student" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" size="11" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="first_name" phpName="FirstName" type="VARCHAR" size="255" required="true"/>
-    <column name="last_name" phpName="LastName" type="VARCHAR" size="255" required="true"/>
-    <column name="gender" phpName="Gender" type="ENUM" valueSet="female, male" required="true"/>
-    <column name="student_num" phpName="StudentNum" type="VARCHAR" size="8" required="true"/>
-    <column name="birth_date" phpName="BirthDate" type="DATE" required="true" />
-    <column name="status" phpName="Status" type="ENUM" valueSet="inactive, active" defaultValue="active" required="false"/>
-    <index name="gender_in1">
-        <index-column name="gender"/>
-    </index>
-    <index name="status_in2">
-        <index-column name="status"/>
-    </index>
-    <unique name="student_num_in3">
-        <unique-column name="student_num"/>
-    </unique>
-    <behavior name="timestampable"/>
-</table>
-
-<table namespace="PipelinePropel" name="contact_info" phpName="ContactInfo" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" size="11" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="student_id" phpName="StudentId" type="INTEGER" size="11" required="true"/>
-    <column name="phone_number" phpName="PhoneNumber" type="CHAR" size="11" required="true"/>
-    <column name="address_1" phpName="Address1" type="VARCHAR" size="255" required="true"/>
-    <column name="address_2" phpName="Address2" type="VARCHAR" size="255" required="false"/>
-    <column name="city" phpName="City" type="VARCHAR" size="255" required="true"/>
-    <column name="state" phpName="State" type="CHAR" size="2" required="true"/>
-    <column name="zip" phpName="Zip" type="CHAR" size="5" required="true"/>
-    <column name="status" phpName="Status" type="ENUM" valueSet="inactive, active" defaultValue="active" required="false"/>
-    <index name="student_id_in4">
-        <index-column name="student_id"/>
-    </index>
-    <index name="state_in5">
-        <index-column name="state"/>
-    </index>
-    <index name="zip_in6">
-        <index-column name="zip"/>
-    </index>
-    <index name="status_in7">
-        <index-column name="status"/>
-    </index>
-    <foreign-key foreignTable="student" name="student_id_fk1">
-        <reference local="student_id" foreign="id" />
-    </foreign-key>
-    <behavior name="timestampable"/>
-</table>
-
-<table namespace="PipelinePropel" name="dorm" phpName="Dorm" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" size="11" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="name" phpName="name" type="VARCHAR" size="255" required="true"/>
-    <behavior name="timestampable"/>
-</table>
-
-<table namespace="PipelinePropel" name="floor" phpName="Floor" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" size="11" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="dorm_id" phpName="DormId" type="INTEGER" size="11" required="true"/>
-    <column name="number" phpName="Number" type="TINYINT" size="1" required="true"/>
-    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
-    <behavior name="timestampable"/>
-    <index name="dorm_id_in8">
-        <index-column name="dorm_id"/>
-    </index>
-    <foreign-key foreignTable="dorm" name="dorm_id_fk2">
-        <reference local="dorm_id" foreign="id" />
-    </foreign-key>
-</table>
-
-<table namespace="PipelinePropel" name="unit" phpName="Unit" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" size="11" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="floor_id" phpName="FloorId" type="INTEGER" size="11" required="true"/>
-    <column name="number" phpName="Number" type="TINYINT" size="1" required="true"/>
-    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
-    <behavior name="timestampable"/>
-    <index name="floor_id_in9">
-        <index-column name="floor_id"/>
-    </index>
-    <foreign-key foreignTable="floor" name="floor_id_fk3">
-        <reference local="floor_id" foreign="id" />
-    </foreign-key>
-</table>
-
-<table namespace="PipelinePropel" name="room" phpName="Room" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" size="11" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="unit_id" phpName="UnitId" type="INTEGER" size="11" required="true"/>
-    <column name="number" phpName="Number" type="TINYINT" size="1" required="true"/>
-    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
-    <behavior name="timestampable"/>
-    <index name="unit_id_in10">
-        <index-column name="unit_id"/>
-    </index>
-    <foreign-key foreignTable="unit" name="unit_id_fk4">
-        <reference local="unit_id" foreign="id" />
-    </foreign-key>
-</table>
-
-<table namespace="PipelinePropel" name="room_assignment" phpName="RoomAssignment" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" size="11" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="student_id" phpName="StudentId" type="INTEGER" size="11" required="true"/>
-    <column name="room_id" phpName="RoomId" type="INTEGER" size="11" required="true"/>
-    <column name="status" phpName="Status" type="ENUM" valueSet="inactive, active" defaultValue="active" required="false"/>
-    <index name="student_id_in11">
-        <index-column name="student_id"/>
-    </index>
-    <index name="room_id_in12">
-        <index-column name="room_id"/>
-    </index>
-    <index name="status_in13">
-        <index-column name="status"/>
-    </index>
-    <foreign-key foreignTable="student" name="student_id_fk5">
-        <reference local="student_id" foreign="id" />
-    </foreign-key>
-    <foreign-key foreignTable="room" name="room_id_fk6">
-        <reference local="room_id" foreign="id" />
-    </foreign-key>
-    <behavior name="timestampable"/>
-</table>
-
+<database name="pipeline" deafultIdMethod="native">
+    <table namespace="PipelinePropel" name="pillow" phpName="Pillow" idMethod="native">
+        <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10)" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="size" phpName="Size" type="ENUM" valueSet="king, queen, double, body" required="true" defaultValue="queen" />
+        <column name="loft" phpName="Loft" type="INTEGER" size="5" required="false" />
+        <column name="fill" phpName="Fill" type="VARCHAR" size="255" required="false" />
+        <column name="my_pillow" phpName="MyPillow" type="BOOLEAN" size="1" required="true"/>
+        <column name="bed_id" phpName="INTEGER" size="10" sqlType="int(10)" required="true" />"
+        <foreign-key foreignTable="bed" name="fk_pillow_bed1">
+            <reference local="bed_id" foreign="id" />
+        </foreign-key>
+        <behavior name="timestampable" />
+    </table>
+    <table namespace="PipelinePropel" name="pillow_case" phpName="PillowCase" idMethod="native">
+        <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10)" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="size" phpName="Size" type="ENUM" valueSet="king, queen, double, body" required="true" defautlValue="queen" />
+        <column name="color" phpName="Color" type="VARCHAR" size="255" required="true" />
+        <column name="pillow_id" phpName="PillowId" type="INTEGER" size="10" sqlType="int(10)" />
+        <foreign-key foreignTable="pillow" name="fk_pillow_case_pillow1">
+            <reference local="pillow_id" foreign="id" />
+        </foreign-key>
+        <behavior name="timestampable" />
+    </table>
+    <table namespace="PipelinePropel" name="bed" phpName="Bed" idMethod="native">
+        <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10)" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="name" phpName="Name" type="VARCHAR" size="255" required="true" />
+        <column name="size" phpName="Size" type="ENUM" valueSet="twin, double, queen, king" required="true" defaultValue="double" />
+        <column name="style" phpName="Style" type="VARCHAR" size="255" require="true" />
+        <column name="bunk_flag" phpName="BunkFlag" type="BOOLEAN" size="1" required="true" />
+        <behavior name="timestampable" />
+    </table>
 </database>
