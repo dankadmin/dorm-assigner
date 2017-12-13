@@ -9,8 +9,8 @@ return array(
                     'user'     => 'USER',
                     'password' => 'PASSWORD',
                 ),
-                'DB_CONNECTION' => array(
-                    'dbname' => 'DB_CONNECTION'
+                'pipeline' => array(
+                    'dbname' => 'DB_NAME'
                 ),
             ),
         ),
