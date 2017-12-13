@@ -23,13 +23,13 @@
         <column name="size" phpName="Size" type="ENUM" valueSet="king, queen, double, body" required="true" defautlValue="queen" />
         <column name="color" phpName="Color" type="VARCHAR" size="255" required="true" />
         <column name="pillow_id" phpName="PillowId" type="INTEGER" size="10"/>
-        <index name="id1_size">
+        <index name="id3_size">
             <index-column name="size"/>
         </index>
-        <index name="id2_pillow_id">
+        <index name="id4_pillow_id">
             <index-column name="pillow_id"/>
         </index>
-        <foreign-key foreignTable="pillow" name="fk1_pillow_case_pillow">
+        <foreign-key foreignTable="pillow" name="fk2_pillow_case_pillow">
             <reference local="pillow_id" foreign="id" />
         </foreign-key>
     </table>
@@ -39,8 +39,9 @@
         <column name="size" phpName="Size" type="ENUM" valueSet="twin, double, queen, king" required="true" defaultValue="double" />
         <column name="style" phpName="Style" type="VARCHAR" size="255" require="true" />
         <column name="bunk_flag" phpName="BunkFlag" type="BOOLEAN" size="1" required="true" />
-        <index name="id1_size">
+        <index name="id5_size">
             <index-column name="size"/>
         </index>
     </table>
 </database>
+
