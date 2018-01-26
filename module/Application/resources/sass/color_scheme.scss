@@ -1,0 +1,65 @@
+// Color scheme - uses color_pallete
+
+// Internal color scheme
+$primary-color: $purple;
+$primary-inverse: $white;
+
+$empty-color: $dark-gray;
+$empty-inverse: $white;
+
+$background-primary: $bright-gray;
+$background-primary-inverse: $black;
+$background-secondary: $white;
+$background-secondary-inverse: $black;
+
+$primary-male: $blue;
+$primary-male-inverse: $white;
+$secondary-male: $light-blue;
+$secondary-male-inverse: $black;
+
+$primary-female: $red;
+$primary-female-inverse: $white;
+$secondary-female: $light-red;
+$secondary-female-inverse: $black;
+
+
+// Applied colors
+$background: $background-primary;
+$background-text: $background-primary-inverse;
+
+$navbar-background: $primary-color;
+$navbar-text: $primary-inverse;
+$navbar-fade: $dark-purple;
+
+$secondary-background: $background-secondary;
+$secondary-background-text: $background-secondary-inverse;
+
+$panel-background: $secondary-background;
+$panel-text: $secondary-background-text;
+$border-color: $primary-color;
+
+$jumbotron-background: $secondary-background;
+$jumbotron-text: $secondary-background-text;
+
+$button-background: $primary-color;
+$button-text: $primary-inverse;
+$button-fade: $black;
+
+$panel-head: $primary-color;
+$panel-head-text: $primary-inverse;
+
+$male-room-background: $primary-male;
+$male-room-text: $primary-male-inverse;
+
+$male-room-partial-background: $secondary-male;
+$male-room-partial-text: $secondary-male-inverse;
+
+$female-room-background: $primary-female;
+$female-room-text: $primary-female-inverse;
+
+$female-room-partial-background: $secondary-female;
+$female-room-partial-text: $secondary-female-inverse;
+
+$unoccupied-room-background: $empty-color;
+$unoccupied-room-text: $empty-inverse;
+

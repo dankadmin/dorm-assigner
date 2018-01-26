@@ -1,0 +1,73 @@
+// Global tags
+
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    background-color: $background;
+    color: $background-text;
+}
+
+strong {
+    color: $primary-color;
+}
+
+// Global classes
+
+.panel-primary {
+    background: $panel-background;
+    color: $panel-text;
+    border-color: $border-color;
+
+    .panel-heading {
+        background: $panel-head;
+        color: $panel-head-text;
+        border-color: $border-color;
+    }
+
+    .panel-title {
+        color: $panel-head-text;
+    }
+}
+
+.btn-primary {
+    background-color: $button-background;
+    color: $button-text;
+    border-color: $border-color;
+    background-image: -moz-linear-gradient(top, $button-fade, $button-background);
+    background-image: -ms-linear-gradient(top, $button-fade, $button-background);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($button-fade), to($button-background));
+    background-image: -webkit-linear-gradient(top, $button-fade, $button-background);
+    background-image: -o-linear-gradient(top, $button-fade, $button-background);
+    background-image: linear-gradient(top, $button-fade, $button-background);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$button-fade', endColorstr='$button-background', GradientType=0);
+    border-radius: 4px;
+
+    &:hover,
+    &:active,
+    &.active,
+    &.disabled,
+    &[disabled] {
+        background-color: $button-background;
+    }
+}
+
+.jumbotron {
+    background-color: $jumbotron-background;
+    color: $jumbotron-text;
+}
+
+.navbar-inverse {
+    background-color: $navbar-background;
+    color: $navbar-text;
+    background-image: linear-gradient(to bottom, $navbar-background 0%, $navbar-fade 100%);
+    background-repeat: repeat-x;
+
+    div.container a.navbar-brand {
+        &, > img {
+            display: inline;
+            margin-right: 4px;
+            margin-top: -2px;
+            color: $navbar-text;
+        }
+    }
+}
