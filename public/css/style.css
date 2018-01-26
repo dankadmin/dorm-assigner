@@ -1,33 +1,69 @@
+.male-room {
+  background: #59aeff;
+  color: #ffffff; }
+
+.female-room {
+  background: #fc3a4a;
+  color: #ffffff; }
+
+.male-room-partial {
+  background: #bfe0ff;
+  color: #101010; }
+
+.female-room-partial {
+  background: #fcc9ce;
+  color: #101010; }
+
+.unoccupied-room {
+  background: #837575;
+  color: #ffffff; }
+
 body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-}
+  padding-top: 60px;
+  padding-bottom: 40px;
+  background-color: #e1e1e1;
+  color: #101010; }
 
-.zf-green {
-    color: #68b604;
-}
+strong {
+  color: #411147; }
 
-.btn-success {
-    background-color: #57a900;
-    background-image: -moz-linear-gradient(top, #70d900, #57a900);
-    background-image: -ms-linear-gradient(top, #70d900, #57a900);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
-    background-image: -webkit-linear-gradient(top, #70d900, #57a900);
-    background-image: -o-linear-gradient(top, #70d900, #57a900);
-    background-image: linear-gradient(top, #70d900, #57a900);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
-}
+.panel-primary {
+  background: #ffffff;
+  color: #101010;
+  border-color: #411147; }
+  .panel-primary .panel-heading {
+    background: #411147;
+    color: #ffffff;
+    border-color: #411147; }
+  .panel-primary .panel-title {
+    color: #ffffff; }
 
-.btn-success:hover,
-.btn-success:active,
-.btn-success.active,
-.btn-success.disabled,
-.btn-success[disabled] {
-    background-color: #57a900;
-}
+.btn-primary {
+  background-color: #411147;
+  color: #ffffff;
+  border-color: #411147;
+  background-image: -moz-linear-gradient(top, #101010, #411147);
+  background-image: -ms-linear-gradient(top, #101010, #411147);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#101010), to(#411147));
+  background-image: -webkit-linear-gradient(top, #101010, #411147);
+  background-image: -o-linear-gradient(top, #101010, #411147);
+  background-image: linear-gradient(top, #101010, #411147);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$button-fade', endColorstr='$button-background', GradientType=0);
+  border-radius: 4px; }
+  .btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
+    background-color: #411147; }
 
-div.container a.navbar-brand > img {
+.jumbotron {
+  background-color: #ffffff;
+  color: #101010; }
+
+.navbar-inverse {
+  background-color: #411147;
+  color: #ffffff;
+  background-image: linear-gradient(to bottom, #411147 0%, #210527 100%);
+  background-repeat: repeat-x; }
+  .navbar-inverse div.container a.navbar-brand, .navbar-inverse div.container a.navbar-brand > img {
     display: inline;
     margin-right: 4px;
     margin-top: -2px;
-}
+    color: #ffffff; }
