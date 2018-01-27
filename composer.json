@@ -13,7 +13,7 @@
     },
     "require-dev": {
         "zfcampus/zf-development-mode": "~2.0",
-        "zendframework/zend-developer-tools" : "1.0.0"
+        "zendframework/zend-developer-tools" : "1.0.0",
+        "phpunit/phpunit": "5.7.*"
     }
 }
-
