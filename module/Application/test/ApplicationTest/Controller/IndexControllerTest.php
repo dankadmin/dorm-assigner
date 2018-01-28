@@ -25,4 +25,13 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->assertMatchedRouteName('home');
         $this->assertQueryContentRegex('.jumbotron', '/.*Dorm Assigner.*/');
     }
+
+    public function testHomePageHasNavigationToMainPages()
+    {
+        $this->dispatch('/');
+        $this->assertResponseStatusCode(200);
+        $this->assertQueryContentContains('ul.nav a', 'Home');
+        $this->assertQueryContentContains('ul.nav a', 'Add Student');
+    }
+
 }

@@ -13,6 +13,26 @@ return array(
                     ),
                 ),
             ),
+            'students' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/student',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Student',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'addStudent' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/student/add',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Student',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -47,7 +67,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Student' => 'Application\Controller\StudentController',
         ),
     ),
     'view_manager' => array(
@@ -77,6 +98,29 @@ return array(
         'resolver_configs' => array(
             'paths' => array(
                 'Application' => __DIR__ . '/public',
+            ),
+        ),
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+        ),
+    ),
+    'navigation' => array(
+        'default' => array(
+            array(
+                'label' => 'Home',
+                'route' => 'home',
+            ),
+            array(
+                'label' => 'Students',
+                'route' => 'students',
+                'pages' => array(
+                    array(
+                        'label' => 'Add Student',
+                        'route' => 'addStudent',
+                    ),
+                ),
             ),
         ),
     ),

@@ -71,3 +71,15 @@ strong {
         }
     }
 }
+
+.dropdown {
+
+    > .dropdown-menu {
+		display: none;
+    }
+
+    &:hover > .dropdown-menu {
+		display: block;
+    }
+}
+
