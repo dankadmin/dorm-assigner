@@ -67,3 +67,9 @@ strong {
     margin-right: 4px;
     margin-top: -2px;
     color: #ffffff; }
+
+.dropdown > .dropdown-menu {
+  display: none; }
+
+.dropdown:hover > .dropdown-menu {
+  display: block; }
