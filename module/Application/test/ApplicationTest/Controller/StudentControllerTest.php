@@ -26,4 +26,22 @@ class StudentControllerTest extends AbstractHttpControllerTestCase
         $this->assertQueryContentRegex('.panel-title', '/Add a New Student/');
     }
 
+    public function testCanSubmitNewStudentWithName()
+    {
+        $this->dispatch(
+            '/student/add',
+            'POST',
+            array(
+                'id' => '',
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'submit' => 'Add Student'
+            )
+        );
+
+        $this->assertResponseStatusCode(200);
+
+        $this->assertQueryContentRegex('.alert', '/.*Success.*/');
+    }
+
 }

@@ -1,3 +1,18 @@
+<?php if (isset($this->student_name)) { ?>
+<div class="row">
+    <div class="col-md-6 col-sm-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Create Student</h3>
+            </div>
+            <div class="panel-body">
+                <p>Success. Requested new student: "<?php echo $this->student_name; ?>"</p>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
 <div class="row">
     <div class="col-md-6 col-sm-offset-2">
         <div class="panel panel-primary">
@@ -5,7 +20,16 @@
                 <h3 class="panel-title">Add a New Student</h3>
             </div>
             <div class="panel-body">
-                <form></form>
+                <?php
+                    echo $this->partial(
+                        'application/partial/form.phtml',
+                        array(
+                            'form' => $this->form,
+                            'messages' => $this->messages,
+                            'success' => $this->success,
+                        )
+                    );
+                ?>
             </div>
         </div>
     </div>
