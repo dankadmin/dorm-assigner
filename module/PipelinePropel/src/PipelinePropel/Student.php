@@ -8,6 +8,8 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
+//use Zend\Validator\EmailAddress;
+
 
 /**
  * Skeleton subclass for representing a row from the 'student' table.
@@ -61,11 +63,9 @@ class Student extends BaseStudent implements InputFilterAwareInterface
                  ),
                  'validators' => array(
                      array(
-                         'name'    => 'StringLength',
+                         'name'    => 'Application\Validator\SimpleString',
                          'options' => array(
                              'encoding' => 'UTF-8',
-                             'min'      => 1,
-                             'max'      => 100,
                          ),
                      ),
                  ),
@@ -80,11 +80,9 @@ class Student extends BaseStudent implements InputFilterAwareInterface
                  ),
                  'validators' => array(
                      array(
-                         'name'    => 'StringLength',
+                         'name'    => 'Application\Validator\SimpleString',
                          'options' => array(
                              'encoding' => 'UTF-8',
-                             'min'      => 1,
-                             'max'      => 100,
                          ),
                      ),
                  ),

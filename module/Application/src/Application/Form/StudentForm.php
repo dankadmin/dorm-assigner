@@ -20,8 +20,6 @@ class StudentForm extends Form
             'options' => array(
                 'label' => 'First Name',
                 'required' => true,
-                'validation' => 'string',
-                'pattern' => '^[a-zA-Z0-9., -]{1,100}$',
             ),
         ));
         $this->add(array(
@@ -30,7 +28,6 @@ class StudentForm extends Form
             'options' => array(
                 'label' => 'Last Name',
                 'required' => true,
-                'pattern' => '^[a-zA-Z0-9., -]{1,100}$',
             ),
         ));
         $this->add(array(

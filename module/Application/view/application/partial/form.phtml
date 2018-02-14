@@ -27,18 +27,14 @@ $form->setAttributes(array(
 $form->prepare();
 
 echo $this->form()->openTag($form);
-foreach ($form as $element) :?>
+echo "\n";
+
+foreach ($form as $element) {?>
     <div class="form-group">
         <?php 
             $type = $element->getAttribute('type');
             $name = $element->getAttribute('name'); 
             $label = $element->getLabel();
-            if ($element->getOption('validation')) {
-                $validation = ' validation-' . $element->getOption('validation');
-            } else {
-                $validation = '';
-            }
-            
         ?>
         <?php if ($type == 'hidden') { ?>
             <div class="hidden"><?php echo $this->formElement($element); ?></div>
@@ -57,20 +53,29 @@ foreach ($form as $element) :?>
                     <input type="submit" class="btn btn-primary submit-btn" value="<?php echo $value; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>">
                 </div>
         <?php } else if ($label != '') { ?>
+
                 <label class="control-label col-xs-3"><?php echo $label ?></label>
                 <div class="col-xs-9">
-                    <input class="form-control <?php echo $validation;?>" name="<?php echo $name ?>" type="<?php echo $type ?>"<?php
+                    <input class="form-control" name="<?php echo $name ?>" type="<?php echo $type ?>" <?php
+                        $validators = $form->getInputFilter()->get($name)->getValidatorChain()->getValidators();
+                        if (count($validators) > 0) {
+                            echo 'validate="';
+                            foreach ($validators as $validator) {
+                                $validator_name = get_class($validator['instance']);
+                                $validator_name = preg_replace('@.*\\\\@', '', $validator_name);
+                                echo "$validator_name ";
+                            }
+                            echo '"';
+                        }
+
                         if ($element->getOption('required')) {
                             echo ' required="required"';
                         }
 
-                        if ($element->getOption('pattern')) {
-                            echo ' pattern="' . $element->getOption('pattern') . '"';
-                        }
                     ?> />
                 </div>
         <?php } ?> 
     </div>
 <?php 
-endforeach;
+}
 echo $this->form()->closeTag();
