@@ -51,6 +51,8 @@
             <?php echo $this->content; ?>
             <hr>
         </div> <!-- /container -->
-        <?php echo $this->inlineScript() ?>
+        <?php echo $this->inlineScript()
+            ->prependFile($this->basePath() . '/js/script.js')
+        ; ?>
     </body>
 </html>
