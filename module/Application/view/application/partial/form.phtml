@@ -40,7 +40,9 @@ foreach ($form as $element) {?>
             <div class="hidden"><?php echo $this->formElement($element); ?></div>
         <?php } else if ($type == 'submit') { ?>
             <?php
-                if ($element->getAttribute('value')) {
+                if ($element->getValue()) {
+                    $value = $element->getValue();
+                } elseif ($element->getAttribute('value')) {
                     $value = $element->getAttribute('value');
                 } elseif ($element->getAttribute('caption')) {
                     $value = $element->getAttribute('caption');

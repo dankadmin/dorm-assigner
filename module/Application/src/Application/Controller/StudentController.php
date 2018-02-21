@@ -4,9 +4,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-
 use Application\Form\StudentForm;
-use PipelinePropel\Student;
 
 class StudentController extends AbstractActionController
 {
@@ -18,18 +16,14 @@ class StudentController extends AbstractActionController
     public function addAction()
     {
         $form = new StudentForm();
-        $student = new Student();
 
-        $form->get('submit')->setValue('Add');
-
-        $form->setInputFilter($student->getInputFilter());
+        $form->get('submit')->setValue('Add Student');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $student->exchangeArray($form->getData());
                 $student_name = $request->getPost('first_name') . " " . $request->getPost('last_name');
                 return new ViewModel(array(
                     'form' => $form,

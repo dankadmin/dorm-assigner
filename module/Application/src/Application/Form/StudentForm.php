@@ -3,6 +3,8 @@
 namespace Application\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
+
 
 class StudentForm extends Form
 {
@@ -10,10 +12,20 @@ class StudentForm extends Form
     {
         parent::__construct($name);
 
+        $inputFilter = new InputFilter();
+
         $this->add(array(
             'name' => 'id',
             'type' => 'Hidden',
         ));
+        $inputFilter->add(array(
+            'name'     => 'id',
+            'required' => true,
+            'filters'  => array(
+             array('name' => 'Int'),
+            ),
+        ));
+
         $this->add(array(
             'name' => 'first_name',
             'type' => 'Text',
@@ -22,6 +34,23 @@ class StudentForm extends Form
                 'required' => true,
             ),
         ));
+        $inputFilter->add(array(
+            'name'     => 'first_name',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\SimpleString',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
         $this->add(array(
             'name' => 'last_name',
             'type' => 'Text',
@@ -30,6 +59,23 @@ class StudentForm extends Form
                 'required' => true,
             ),
         ));
+        $inputFilter->add(array(
+            'name'     => 'last_name',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\SimpleString',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
         $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
@@ -39,5 +85,10 @@ class StudentForm extends Form
                 'id' => 'submitbutton',
             ),
          ));
+
+        $this->setInputFilter($inputFilter);
     }
 }
+
+
+

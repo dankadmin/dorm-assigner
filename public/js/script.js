@@ -24,6 +24,41 @@ class Validator {
     }
 }
 
+class ValidatorFactory
+{
+    constructor() {
+        this.validators = [];
+    }
+
+    register(string, validator) {
+        this.validators[string] = validator;
+    }
+
+    create(string, value) {
+        if (typeof this.validators[string] === 'function' ) {
+            return new this.validators[string](value);
+        } else {
+            return new Validator;
+        }
+    }
+}
+
+var VALIDATORS = new ValidatorFactory();
+
+class EmailAddressValidator extends Validator {
+    isValid() {
+        this.reset();
+
+        if (!/^[a-zA-Z0-9]{2,}@[a-z][a-zA-Z0-9]{3,}\.[a-z]{2,15}$/.test(this.value)) {
+            this.addError('Not a valid email address');
+        }
+
+        return this.is_valid;
+    }
+}
+
+VALIDATORS.register('EmailAddress', EmailAddressValidator);
+
 class SimpleStringValidator extends Validator {
     isValid() {
         this.reset();
@@ -44,6 +79,8 @@ class SimpleStringValidator extends Validator {
     }
 }
 
+VALIDATORS.register('SimpleString', SimpleStringValidator);
+
 function validate_input(element) {
     var is_valid = true;
     var validator;
@@ -52,13 +89,7 @@ function validate_input(element) {
     element.attr('validate')
         .split(' ')
         .forEach(function(validation_type) {
-            switch (validation_type + 'Validator') {
-                case 'SimpleStringValidator':
-                    validator = new SimpleStringValidator(element.val());
-                    break;
-                default:
-                    validator = '';
-            }
+            validator = VALIDATORS.create(validation_type, element.val());
 
             if (validator instanceof Validator) {
                 if (! validator.isValid()) {
@@ -98,10 +129,12 @@ function validate_all() {
 }
 
 $(function () {
+    // Validate field when focus is lost
     $('input[validate]').blur(function () {
         validate_input($(this));
     });
 
+    // Validate all fields before submitting form
     $('form input[type=submit]').click(function(event) {
         if (! validate_all()) {
             window.alert('Please correct errors before submitting.');
