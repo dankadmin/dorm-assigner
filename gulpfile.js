@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 
 //style paths
 var sass_files = 'module/Application/resources/sass/**/*.scss';
+var js_files = 'module/Application/resources/js/**/*.js';
 var css_dest = 'public/css/';
 var js_dest = 'public/js/';
 
@@ -33,5 +34,7 @@ gulp.task('default', function(){
 
 gulp.task('watch',function() {
     gulp.start('styles');
+    gulp.start('scripts');
     gulp.watch(sass_files,['styles']);
+    gulp.watch(js_files,['scripts']);
 });

@@ -45,20 +45,6 @@ class ValidatorFactory
 
 var VALIDATORS = new ValidatorFactory();
 
-class EmailAddressValidator extends Validator {
-    isValid() {
-        this.reset();
-
-        if (!/^[a-zA-Z0-9]{2,}@[a-z][a-zA-Z0-9]{3,}\.[a-z]{2,15}$/.test(this.value)) {
-            this.addError('Not a valid email address');
-        }
-
-        return this.is_valid;
-    }
-}
-
-VALIDATORS.register('EmailAddress', EmailAddressValidator);
-
 class SimpleStringValidator extends Validator {
     isValid() {
         this.reset();
