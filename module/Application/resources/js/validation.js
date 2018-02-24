@@ -34,6 +34,7 @@ function validate_input(element) {
         element.attr('validate')
             .split(' ')
             .forEach(function(validation_type) {
+                console.log("VT: '" + validation_type + "'");
                 validator = VALIDATORS.create(validation_type, element.val());
 
                 if (validator instanceof Validator) {

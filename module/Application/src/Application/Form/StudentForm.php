@@ -235,6 +235,31 @@ class StudentForm extends Form
             ),
         ));
 
+        $this->add(array(
+            'name' => 'student_num',
+            'type' => 'Text',
+            'options' => array(
+                'label' => 'Student ID',
+                'required' => true,
+            ),
+        ));
+        $inputFilter->add(array(
+            'name'     => 'student_num',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\StudentId',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
 
         $this->add(array(
             'name' => 'submit',
