@@ -54,6 +54,31 @@ foreach ($form as $element) {?>
                 <div class="col-xs-offset-3 col-xs-10">
                     <input type="submit" class="btn btn-primary submit-btn" value="<?php echo $value; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>">
                 </div>
+        <?php } else if ($type == 'select') { ?>
+                <label class="control-label col-xs-3"><?php echo $label ?></label>
+                <div class="col-xs-9">
+                    <select class="form-control" name="<?php echo $name ?>" <?php
+                        $validators = $form->getInputFilter()->get($name)->getValidatorChain()->getValidators();
+                        if (count($validators) > 0) {
+                            echo 'validate="';
+                            foreach ($validators as $validator) {
+                                $validator_name = get_class($validator['instance']);
+                                $validator_name = preg_replace('@.*\\\\@', '', $validator_name);
+                                echo "$validator_name ";
+                            }
+                            echo '"';
+                        }
+
+                        if ($element->getOption('required')) {
+                            echo ' required="required"';
+                        }
+
+                    ?> >
+                    <?php foreach ($element->getValueOptions() as $key => $value) { ?>
+                        <option value="<?php echo $key; ?>"><?php echo "$value"; ?></option>
+                    <?php } ?>
+                    </select>
+                </div>
         <?php } else if ($label != '') { ?>
 
                 <label class="control-label col-xs-3"><?php echo $label ?></label>

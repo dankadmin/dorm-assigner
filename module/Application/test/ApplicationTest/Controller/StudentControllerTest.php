@@ -35,6 +35,14 @@ class StudentControllerTest extends AbstractHttpControllerTestCase
                 'id' => '',
                 'first_name' => 'John',
                 'last_name' => 'Doe',
+                'street' => '123 Main Street',
+                'city' => 'Someplace',
+                'state' => 'Alabama',
+                'zip' => '12345',
+                'gender' => 'male',
+                'student_num' => 'JD123456',
+                'birth_date' => '19700101',
+                'status' => 'active',
                 'submit' => 'Add Student'
             )
         );
