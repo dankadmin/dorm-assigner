@@ -206,6 +206,35 @@ class StudentForm extends Form
             ),
         ));
 
+        $this->add(array(
+            'name' => 'gender',
+            'type' => 'Radio',
+            'options' => array(
+                'label' => 'Gender',
+                'required' => true,
+                'value_options' => array(
+                    'male' => 'Male',
+                    'female' => 'Female',
+                ),
+            ),
+        ));
+        $inputFilter->add(array(
+            'name'     => 'gender',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\Gender',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
 
         $this->add(array(
             'name' => 'submit',

@@ -191,12 +191,10 @@ function set_error_messages(element, is_valid, errors){
                 .html(error);
             element.after(help_block);
         });
-        return false;
     } else {
         // Set containing label to success class
         element.parent().parent().removeClass("has-error");
         element.parent().parent().addClass("has-success");
-        return true;
     }
 }
 
@@ -225,12 +223,14 @@ function validate_input(element) {
     }
 
     set_error_messages(element, is_valid, errors);
+    return is_valid;
 }
 
 function validate_all() {
     var is_valid = true;
-    $('input[validate]').each(function () {
+    $('[validate]').each(function () {
         if (!validate_input($(this))) {
+            console.log($(this).attr('name') + ' is false');
             is_valid = false;
         }
     });
