@@ -26,7 +26,6 @@ function get_validators_string($form, $name) {
     $validators = $form->getInputFilter()->get($name)->getValidatorChain()->getValidators();
 
     if (count($validators) > 0) {
-        echo 'validate="';
         foreach ($validators as $validator) {
             $validator_name = get_class($validator['instance']);
             $validator_name = preg_replace('@.*\\\\@', '', $validator_name);

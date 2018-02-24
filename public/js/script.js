@@ -157,6 +157,20 @@ class StateNameValidator extends Validator {
 
 VALIDATORS.register('StateName', StateNameValidator);
 
+class StudentIdValidator extends Validator {
+    isValid() {
+        this.reset();
+
+        if (! /^[A-Z]{2}[0-9]{6}$/.test(this.value)) {
+            this.addError('Student ID must be in format LLDDDDDD, where L is a capital letter, and D is a digit.');
+        }
+
+        return this.is_valid;
+    }
+}
+
+VALIDATORS.register('StudentId', StudentIdValidator);
+
 class ZipCodeValidator extends Validator {
     isValid() {
         this.reset();
@@ -211,6 +225,7 @@ function validate_input(element) {
         element.attr('validate')
             .split(' ')
             .forEach(function(validation_type) {
+                console.log("VT: '" + validation_type + "'");
                 validator = VALIDATORS.create(validation_type, element.val());
 
                 if (validator instanceof Validator) {
