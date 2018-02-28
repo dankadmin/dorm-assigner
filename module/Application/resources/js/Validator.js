@@ -1,6 +1,7 @@
 class Validator {
-    constructor(value) {
-        this.value = value;
+    constructor(element) {
+        this.element = element;
+        this.value = element.val();
         this.reset();
     }
 
@@ -34,9 +35,9 @@ class ValidatorFactory
         this.validators[string] = validator;
     }
 
-    create(string, value) {
+    create(string, element) {
         if (typeof this.validators[string] === 'function' ) {
-            return new this.validators[string](value);
+            return new this.validators[string](element);
         } else {
             return new Validator;
         }

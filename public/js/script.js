@@ -1,6 +1,7 @@
 class Validator {
-    constructor(value) {
-        this.value = value;
+    constructor(element) {
+        this.element = element;
+        this.value = element.val();
         this.reset();
     }
 
@@ -34,9 +35,9 @@ class ValidatorFactory
         this.validators[string] = validator;
     }
 
-    create(string, value) {
+    create(string, element) {
         if (typeof this.validators[string] === 'function' ) {
-            return new this.validators[string](value);
+            return new this.validators[string](element);
         } else {
             return new Validator;
         }
@@ -98,6 +99,25 @@ class BirthDateValidator extends Validator {
 }
 
 VALIDATORS.register('BirthDate', BirthDateValidator);
+
+class PhoneNumberValidator extends Validator {
+    isValid() {
+        this.reset();
+
+        this.value = this.value.replace(/[^0-9]/g, '');
+
+
+        if (! /^[0-9]{10}$/.test(this.value)) {
+            this.addError('Phone number must be exactly 10 digits, and no other characters');
+        }
+
+        this.element.val(this.value);
+
+        return this.is_valid;
+    }
+}
+
+VALIDATORS.register('PhoneNumber', PhoneNumberValidator);
 
 class SimpleStringValidator extends Validator {
     isValid() {
@@ -257,8 +277,7 @@ function validate_input(element) {
         element.attr('validate')
             .split(' ')
             .forEach(function(validation_type) {
-                console.log("VT: '" + validation_type + "'");
-                validator = VALIDATORS.create(validation_type, element.val());
+                validator = VALIDATORS.create(validation_type, element);
 
                 if (validator instanceof Validator) {
                     if (! validator.isValid()) {
@@ -277,7 +296,6 @@ function validate_all() {
     var is_valid = true;
     $('[validate]').each(function () {
         if (!validate_input($(this))) {
-            console.log($(this).attr('name') + ' is false');
             is_valid = false;
         }
     });
