@@ -104,7 +104,7 @@ class StudentForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'street',
+            'name' => 'address_1',
             'type' => 'Text',
             'options' => array(
                 'label' => 'Street',
@@ -112,8 +112,33 @@ class StudentForm extends Form
             ),
         ));
         $inputFilter->add(array(
-            'name'     => 'street',
+            'name'     => 'address_1',
             'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\SimpleString',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'address_2',
+            'type' => 'Text',
+            'options' => array(
+                'label' => 'Street 2',
+                'required' => false,
+            ),
+        ));
+        $inputFilter->add(array(
+            'name'     => 'address_2',
+            'required' => false,
             'filters'  => array(
                 array('name' => 'StripTags'),
                 array('name' => 'StringTrim'),
@@ -278,6 +303,31 @@ class StudentForm extends Form
             'validators' => array(
                 array(
                     'name'    => 'Application\Validator\BirthDate',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'phone_number',
+            'type' => 'Text',
+            'options' => array(
+                'label' => 'Phone Number',
+                'required' => true,
+            ),
+        ));
+        $inputFilter->add(array(
+            'name'     => 'phone_number',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\PhoneNumber',
                     'options' => array(
                         'encoding' => 'UTF-8',
                     ),

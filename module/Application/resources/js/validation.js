@@ -34,8 +34,7 @@ function validate_input(element) {
         element.attr('validate')
             .split(' ')
             .forEach(function(validation_type) {
-                console.log("VT: '" + validation_type + "'");
-                validator = VALIDATORS.create(validation_type, element.val());
+                validator = VALIDATORS.create(validation_type, element);
 
                 if (validator instanceof Validator) {
                     if (! validator.isValid()) {
@@ -54,7 +53,6 @@ function validate_all() {
     var is_valid = true;
     $('[validate]').each(function () {
         if (!validate_input($(this))) {
-            console.log($(this).attr('name') + ' is false');
             is_valid = false;
         }
     });
