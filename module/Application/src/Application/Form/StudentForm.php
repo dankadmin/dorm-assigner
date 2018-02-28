@@ -335,6 +335,35 @@ class StudentForm extends Form
             ),
         ));
 
+        $this->add(array(
+            'name' => 'status',
+            'type' => 'Radio',
+            'options' => array(
+                'label' => 'Status',
+                'required' => true,
+                'value_options' => array(
+                    'active' => 'Active',
+                    'inactive' => 'Inactive',
+                ),
+            ),
+        ));
+        $inputFilter->add(array(
+            'name'     => 'status',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\Status',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
 
         $this->add(array(
             'name' => 'submit',
