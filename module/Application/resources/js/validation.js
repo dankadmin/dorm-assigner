@@ -64,7 +64,7 @@ function validate_all() {
 
 function init_validation() {
     // Validate field when focus is lost
-    $('[validate]').blur(function () {
+    $('[validate]').change(function () {
         validate_input($(this));
     });
 

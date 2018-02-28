@@ -67,6 +67,38 @@ class AlNumSpacesValidator extends Validator {
 
 VALIDATORS.register('AlNumSpaces', AlNumSpacesValidator);
 
+class BirthDateValidator extends Validator {
+    isValid() {
+        this.reset();
+
+
+        if (! /^([0-9]{4})-[0-2][0-9]-[0-3][0-9]$/.test(this.value)) {
+            this.addError('Date must be in the format YYYY-mm-dd');
+            return this.is_valid;
+        }
+
+        var date = new Date(this.value);
+
+        if (date === "Invalid Date" || isNaN(date)) {
+            this.addError('Date does not appear to be a valid date');
+            return this.is_valid;
+        }
+
+        var today = new Date();
+        if ((new Date(today.getFullYear() - 100, today.getMonth(), today.getDate())) > date) {
+            this.addError('Date cannot be older than 100 years');
+        }
+
+        if ((new Date(today.getFullYear() - 10, today.getMonth(), today.getDate())) < date) {
+            this.addError('Date cannot be less than 10 years ago');
+        }
+
+        return this.is_valid;
+    }
+}
+
+VALIDATORS.register('BirthDate', BirthDateValidator);
+
 class SimpleStringValidator extends Validator {
     isValid() {
         this.reset();
@@ -255,7 +287,7 @@ function validate_all() {
 
 function init_validation() {
     // Validate field when focus is lost
-    $('[validate]').blur(function () {
+    $('[validate]').change(function () {
         validate_input($(this));
     });
 
@@ -268,6 +300,22 @@ function init_validation() {
     });
 }
 
+function init_datepicker() {
+    var date_input=$('input[name="birth_date"]');
+    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    var options={
+        format: 'yyyy-mm-dd',
+        container: container,
+        autoclose: true,
+        title: 'Date of Birth',
+        startDate: '-100y',
+        endDate: '-10y',
+        startView: 2,
+    };
+    date_input.datepicker(options);
+}
+
 $(function () {
     init_validation();
+    init_datepicker();
 });

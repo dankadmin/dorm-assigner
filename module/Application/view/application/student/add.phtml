@@ -1,3 +1,7 @@
+<?php
+    $this->headLink()->prependStylesheet('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css');
+    $this->inlineScript()->prependFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js');
+?>
 <?php if (isset($this->student_name)) { ?>
 <div class="row">
     <div class="col-md-6 col-sm-offset-2">

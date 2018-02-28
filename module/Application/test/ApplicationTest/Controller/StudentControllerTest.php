@@ -41,7 +41,7 @@ class StudentControllerTest extends AbstractHttpControllerTestCase
                 'zip' => '12345',
                 'gender' => 'male',
                 'student_num' => 'JD123456',
-                'birth_date' => '19700101',
+                'birth_date' => '1970-01-01',
                 'status' => 'active',
                 'submit' => 'Add Student'
             )
