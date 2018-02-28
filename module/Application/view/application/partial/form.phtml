@@ -20,22 +20,24 @@
     </div>
 <?php }
 
-function get_validators_string($form, $name) {
-    $validator_string = '';
+if (! function_exists('get_validators_string')) {
+    function get_validators_string($form, $name) {
+        $validator_string = '';
 
-    $validators = $form->getInputFilter()->get($name)->getValidatorChain()->getValidators();
+        $validators = $form->getInputFilter()->get($name)->getValidatorChain()->getValidators();
 
-    if (count($validators) > 0) {
-        foreach ($validators as $validator) {
-            $validator_name = get_class($validator['instance']);
-            $validator_name = preg_replace('@.*\\\\@', '', $validator_name);
-            $validator_string .= "$validator_name ";
+        if (count($validators) > 0) {
+            foreach ($validators as $validator) {
+                $validator_name = get_class($validator['instance']);
+                $validator_name = preg_replace('@.*\\\\@', '', $validator_name);
+                $validator_string .= "$validator_name ";
+            }
+        } else {
+            return '';
         }
-    } else {
-        return '';
-    }
 
-    return rtrim($validator_string);
+        return rtrim($validator_string);
+    }
 }
 
 $form->setAttributes(array(

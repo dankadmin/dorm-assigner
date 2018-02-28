@@ -260,6 +260,31 @@ class StudentForm extends Form
             ),
         ));
 
+        $this->add(array(
+            'name' => 'birth_date',
+            'type' => 'Text',
+            'options' => array(
+                'label' => 'Date of Birth',
+                'required' => true,
+            ),
+        ));
+        $inputFilter->add(array(
+            'name'     => 'birth_date',
+            'required' => true,
+            'filters'  => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'Application\Validator\BirthDate',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                    ),
+                ),
+            ),
+        ));
+
 
         $this->add(array(
             'name' => 'submit',

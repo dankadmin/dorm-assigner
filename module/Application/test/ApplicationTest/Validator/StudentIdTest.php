@@ -12,7 +12,7 @@
 
 namespace ApplicationTest\Validator;
 
-use Application\Validator\ZipCode;
+use Application\Validator\StudentId;
 
 /**
   * Student ID Validator Test
@@ -37,9 +37,9 @@ class StudentIdTest extends \PHPUnit_Framework_TestCase
       */
     public function testAcceptsValidStudentIds($text)
     {
-        $zip_code = new StudentId();
+        $student_id = new StudentId();
         
-        $this->assertTrue($zip_code->isValid($text));
+        $this->assertTrue($student_id->isValid($text));
     }
 
 
@@ -70,11 +70,11 @@ class StudentIdTest extends \PHPUnit_Framework_TestCase
       */
     public function testFailsInvalidStringsWithError($text, $error)
     {
-        $zip_code = new ZipCode();
+        $student_id = new StudentId();
         
-        $this->assertFalse($zip_code->isValid($text));
+        $this->assertFalse($student_id->isValid($text));
 
-        $this->assertContains($error, $zip_code->getMessages());
+        $this->assertContains($error, $student_id->getMessages());
     }
 
     /**
