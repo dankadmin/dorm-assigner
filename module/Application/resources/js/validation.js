@@ -26,10 +26,14 @@ function validate_input(element) {
     var validator;
     var errors = [];
 
-    // If element is required and empty, no need to look further, otherwise, use validators
-    if (element.prop('required') && element.val() === '') {
+    // If element isn't required and it's empty, then no problem
+    if (! element.prop('required') && element.val() === '') {
+        return true;
+    // If element is required and empty, it's false
+    } else if (element.val() === '') {
         errors = ["This field is required"];
         is_valid = false;
+    // Otherwise, use validator
     } else {
         element.attr('validate')
             .split(' ')
