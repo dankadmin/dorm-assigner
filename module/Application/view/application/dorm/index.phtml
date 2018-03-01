@@ -1,0 +1,18 @@
+<?php foreach ($this->dorms as $id => $name) { ?>
+    <?php if ( ($count++ % 3) == 0) { ?>
+<div class="row">
+    <?php } ?>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Dorm <?php echo $name ; ?></h3>
+            </div>
+            <div class="panel-body">
+                <p><a class="btn btn-primary pull-right" href="<?php echo $this->url('addStudent');?>">View Dorm <?php echo $id; ?></a></p>
+            </div>
+        </div>
+    </div>
+    <?php if ( ($count % 3) == 0) { ?>
+</div>
+    <?php } ?>
+<?php } ?>

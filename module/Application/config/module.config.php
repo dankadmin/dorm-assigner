@@ -1,5 +1,45 @@
 <?php
 
+
+$dorm_routes = array();
+
+/*
+use PipelinePropel\DormQuery;
+
+$dorms = DormQuery::create()->find();
+
+foreach ($dorms as $dorms) {
+    array_push(
+        $dorm_routes,
+        array(
+            'label' => 'Dorm ' . $dorm->getName(),
+            'route' => 'viewDorm',
+            'params' => array('dormId' => $dorm->getId()),
+        )
+    );
+}
+*/
+
+$dorms = array(
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+);
+
+foreach ($dorms as $id => $name) {
+    array_push(
+        $dorm_routes,
+        array(
+            'label' => "Dorm $name",
+            'route' => 'viewDorm',
+            'params' => array('dormId' => $id),
+        )
+    );
+}
+
 return array(
     'router' => array(
         'routes' => array(
@@ -30,6 +70,29 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\Student',
                         'action'     => 'add',
+                    ),
+                ),
+            ),
+            'dorm' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/dorm',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Dorm',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'viewDorm' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/dorm/view/:dormId',
+                    'constraints' => array(
+                        'dormId' => '[0-9]+|[A-Z]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Dorm',
+                        'action'     => 'view',
                     ),
                 ),
             ),
@@ -69,6 +132,7 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Student' => 'Application\Controller\StudentController',
+            'Application\Controller\Dorm' => 'Application\Controller\DormController',
         ),
     ),
     'view_manager' => array(
@@ -121,6 +185,11 @@ return array(
                         'route' => 'addStudent',
                     ),
                 ),
+            ),
+            array(
+                'label' => 'Dorm',
+                'route' => 'dorm',
+                'pages' => $dorm_routes,
             ),
         ),
     ),
