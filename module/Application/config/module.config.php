@@ -71,6 +71,12 @@ return array(
             'Application\Controller\Student' => 'Application\Controller\StudentController',
         ),
     ),
+    'view_helpers' => array(
+        'invokables' => array(
+            'bootstrapForm' => 'Application\View\Helper\BootstrapForm',
+            'uppercase' => 'MyModule\View\Helper\UpperCase',
+        ),
+    ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
