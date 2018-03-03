@@ -33,7 +33,7 @@ class BootstrapForm extends AbstractHelper
     const TAB_STRING = '    ';
 
     /** PROPERTIES **/
-    /** @var Zend\Form\Form $_form Form which is being viewed. */
+    /** @var \Zend\Form\Form $_form Form which is being viewed. */
     private $_form;
     /** @var string $_output Holds output which is intended to be displayed at the end of __invoke */
     private $_output;
@@ -158,7 +158,7 @@ class BootstrapForm extends AbstractHelper
     *
     * Add a specific form element to the output.
     *
-    * @param Zend\Form\Element $element Form element to add.
+    * @param \Zend\Form\Element $element Form element to add.
     */
     public function addFormElement($element)
     {
