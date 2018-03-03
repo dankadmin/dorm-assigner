@@ -39,7 +39,7 @@ class ValidatorFactory
         if (typeof this.validators[string] === 'function' ) {
             return new this.validators[string](element);
         } else {
-            return new Validator;
+            return null;
         }
     }
 }
