@@ -166,7 +166,7 @@ class BootstrapForm extends AbstractHelper
 
         $type = $element->getAttribute('type');
         $name = $element->getAttribute('name'); 
-        $value = $element->getAttribute('value'); 
+        $value = $element->getValue();
         $label = $element->getLabel();
         $id = $element->getAttribute('id'); 
 
@@ -189,11 +189,11 @@ class BootstrapForm extends AbstractHelper
 
             $this->addOutput(
                 '<div class="hidden">'
-                . '<input type="hidden" '
-                . 'name="' . $name . '" '
-                . 'value="' . $value . '" '
-                . '/>'
-                . '</div>'
+                    . '<input type="hidden" '
+                    . 'name="' . $name . '" '
+                    . 'value="' . $value . '" '
+                    . '/>'
+                    . '</div>'
             );
 
         } else if ($type == 'submit') {
@@ -211,8 +211,8 @@ class BootstrapForm extends AbstractHelper
             $this->addOutput('<div class="col-xs-offset-3 col-xs-10">', 1);
             $this->addOutput(
                 '<input type="submit" class="btn btn-primary submit-btn" '
-                . 'value="' . $value . '" id="' . $id
-                . '" name="' . $name . '" />'
+                    . 'value="' . $value . '" id="' . $id
+                    . '" name="' . $name . '" />'
             );
             $this->addOutput('</div>', -1);
 
@@ -220,27 +220,40 @@ class BootstrapForm extends AbstractHelper
 
             $this->addOUtput(
                 '<select class="form-control" name="' . $name . '" '
-                . $validation_string
-                . $required_string
-                . ">",
+                    . $validation_string
+                    . $required_string
+                    . ">",
                 1
             );
 
-            foreach ($element->getValueOptions() as $key => $value) {
-                $this->addOutput('<option value="' . $key . '">' . $value . '</option>');
+            foreach ($element->getValueOptions() as $key => $text) {
+                if ($value == $key) {
+                    $selected = 'selected="selected" ';
+                } else {
+                    $selected = '';
+                }
+
+                $this->addOutput('<option value="' . $key . '" ' . $selected . '>' . $text . '</option>');
             }
 
             $this->addOutput('</select>', -1);
 
         } else if ($type == 'radio') {
 
-            foreach ($element->getValueOptions() as $key => $value) {
+            foreach ($element->getValueOptions() as $key => $text) {
+                if ($value == $key) {
+                    $checked = 'checked="checked" ';
+                } else {
+                    $checked = '';
+                }
+
                 $this->addOutput('<div class="radio-inline">', 1);
                 $this->addOutput(
                     '<input type="radio" name="' . $name . '" value="' . $key . '" '
-                    . $required_string
-                    . '/>'
-                    . '<span>' . $value . '</span>'
+                        . $required_string
+                        . $checked
+                        . '/>'
+                        . '<span>' . $text . '</span>'
                 );
                 $this->addOutput('</div>', -1);
             }
@@ -249,9 +262,10 @@ class BootstrapForm extends AbstractHelper
 
             $this->addOutput(
                 '<input class="form-control" name="' . $name . '" type="' . $type . '" '
-                . $validation_string
-                . $required_string
-                . ' />'
+                    . $validation_string
+                    . $required_string
+                    . 'value="' . $value . '" '
+                    . ' />'
             );
 
         }
