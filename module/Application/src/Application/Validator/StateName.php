@@ -20,7 +20,7 @@ class StateName extends AbstractValidator
         $states = new States();
         $state_names = $states->getArray();
 
-        if (in_array($value, $state_names)) {
+        if (array_key_exists($value, $state_names)) {
             return true;
         }
 
