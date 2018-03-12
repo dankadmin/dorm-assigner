@@ -1,11 +1,11 @@
 <?php
 
-namespace ApplicationTest;
+//namespace ApplicationTest;
 
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
-use RuntimeException;
+//use RuntimeException;
 
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
@@ -35,9 +35,14 @@ class Bootstrap
                 'module_paths' => $zf2ModulePaths,
             ),
             'modules' => array(
-                'Application'
+                'Application',
+                'ImhPropel',
+                'ZF\\DevelopmentMode',
+                'PipelinePropel'
             )
         );
+
+        $config = include __DIR__ . '/../config/application.config.php';
 
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);

@@ -17,6 +17,14 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Form\StudentForm;
 
+use Application\Classes\Model\DormStudentQuery;
+
+use PipelinePropel\Student;
+use PipelinePropel\ContactInfo;
+
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 /**
  * Student Controller
  *
@@ -31,6 +39,17 @@ use Application\Form\StudentForm;
  */
 class StudentController extends AbstractActionController
 {
+    /** @var Application\Classes\Model\DormStudentQuery $_student_query Model to hold student information. */
+    private $_student_query;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->_student_query = new DormStudentQuery();
+    }
+
    /**
     * Index action
     *
@@ -40,7 +59,15 @@ class StudentController extends AbstractActionController
     */
     public function indexAction()
     {
-        return new ViewModel();
+        $dorm_students = $this->_student_query->fetchAll();
+
+        $students = array();
+
+        foreach ($dorm_students as $student) {
+            array_push($students, $student->getArrayCopy());
+        }
+
+        return new ViewModel(array('students' => $students));
     }
 
    /**
@@ -53,7 +80,6 @@ class StudentController extends AbstractActionController
     public function addAction()
     {
         $form = new StudentForm();
-
         $form->get('submit')->setValue('Add Student');
 
         $request = $this->getRequest();
@@ -61,10 +87,20 @@ class StudentController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $student_name = $request->getPost('first_name') . " " . $request->getPost('last_name');
+                $student = $this->_student_query->new();
+
+                $data = $form->getData();
+
+                $student->exchangeArray($data);
+                $student->save();
+
+                $student_name = $student->getFullName();
+
+                $message = "Success: Received data for '$student_name'.";
+
                 return new ViewModel(array(
                     'form' => $form,
-                    'success' => "Successful request to create $student_name"
+                    'success' => $message,
                 ));
             } else {
                 return new ViewModel(array(
@@ -75,5 +111,25 @@ class StudentController extends AbstractActionController
         }
 
         return new ViewModel(array('form' => $form));
+    }
+
+   /**
+    * listAction
+    *
+    * List all students
+    *
+    * @return ViewModel
+    */
+    public function listAction()
+    {
+        $dorm_students = $this->_student_query->fetchAll();
+
+        $students = array();
+
+        foreach ($dorm_students as $student) {
+            array_push($students, $student->getArrayCopy());
+        }
+
+        return new ViewModel(array('students' => $students));
     }
 }
