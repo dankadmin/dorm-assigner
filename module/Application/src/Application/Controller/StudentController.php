@@ -114,22 +114,55 @@ class StudentController extends AbstractActionController
     }
 
    /**
-    * listAction
+    * editAction
     *
-    * List all students
+    * Edit Student by ID
+    *
+    * @param string $student_id ID, which is the primary key for the Student table
     *
     * @return ViewModel
     */
-    public function listAction()
+    public function editAction()
     {
-        $dorm_students = $this->_student_query->fetchAll();
+        $student_id = $this->params('studentId');
+        $student = $this->_student_query->findById($student_id);
 
-        $students = array();
-
-        foreach ($dorm_students as $student) {
-            array_push($students, $student->getArrayCopy());
+        if ($student == NULL) {
+            throw new \Exception("No Student Found for '$student_id'");
         }
 
-        return new ViewModel(array('students' => $students));
+        $form = new StudentForm();
+        $form->get('submit')->setValue('Update Student');
+        $form->setIsUpdate();
+
+        $form->setData($student->getArrayCopy());
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $student->exchangeArray($data);
+                $student->save();
+
+                $student_name = $student->getFullName();
+
+                $message = "Success: Updated data for '$student_name'.";
+
+                return new ViewModel(array(
+                    'form' => $form,
+                    'success' => $message,
+                ));
+            } else {
+                return new ViewModel(array(
+                    'form' => $form,
+                    'messages' => $form->getMessages()
+                ));
+            }
+        }
+
+        return new ViewModel(array('form' => $form));
     }
 }

@@ -126,10 +126,10 @@ class DormStudentTest extends AbstractHttpControllerTestCase
     }
 
     /** 
-      * 
+      * testDormStudentThrowsErrorOnDuplicate
       *
       */
-    public function testDormStudent()
+    public function testDormStudentThrowsErrorOnDuplicate()
     {
         $data = array(
             'id' => '',
@@ -159,4 +159,48 @@ class DormStudentTest extends AbstractHttpControllerTestCase
         $duplicate_student->save();
     }
 
+    /** 
+      * testDormStudentCanBeUpdated
+      *
+      */
+    public function testDormStudentCanBeUpdated()
+    {
+        $student_num = 'XX111111';
+        $zip = '55555';
+
+        $data = array(
+            'id' => '',
+            'first_name' => 'John III',
+            'last_name' => 'Doe',
+            'address_1' => '123 Main Street',
+            'city' => 'Someplace',
+            'state' => 'Alabama',
+            'zip' => $zip,
+            'gender' => 'male',
+            'student_num' => $student_num,
+            'birth_date' => '1970-01-01',
+            'phone_number' => '7575551234',
+            'status' => 'active',
+        );
+
+        $this->_student->exchangeArray($data);
+        $this->_student->save();
+
+        $id =  $this->_student->getId();
+
+        $test_student = $this->_student_query->findById($id);
+        $this->assertSame($student_num, $test_student->getStudentNum());
+        $this->assertSame($zip, $test_student->getZip());
+
+        $student_num_2 = 'YY222222';
+        $zip_2 = '66666';
+        $this->_student->setStudentNum($student_num_2);
+        $this->_student->setZip($zip_2);
+
+        $this->_student->save();
+
+        $test_student = $this->_student_query->findById($id);
+        $this->assertSame($student_num_2, $test_student->getStudentNum());
+        $this->assertSame($zip_2, $test_student->getZip());
+    }
 }

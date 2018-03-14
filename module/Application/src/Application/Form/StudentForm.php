@@ -15,6 +15,7 @@ namespace Application\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Application\Classes\States;
+use Application\Classes\Model\DormStudentQuery;
 
 /**
   * Student Form
@@ -30,6 +31,9 @@ use Application\Classes\States;
   */
 class StudentForm extends Form
 {
+    /** @var boolean $_is_update Is the form being used for an update. */
+    private $_is_update;
+
     /**
       * Constructor
       *
@@ -376,6 +380,65 @@ class StudentForm extends Form
          ));
 
         $this->setInputFilter($inputFilter);
+    }
+
+  /**
+    * setIsUpdate
+    *
+    * Is Form Valid
+    *
+    * @param boolean $value Set whether this form is an update.
+    */
+    public function setIsUpdate($value = true)
+    {
+        $this->_is_update = $value;
+    }
+
+  /**
+    * isValid
+    *
+    * Is Form Valid
+    *
+    * @return boolean
+    */
+    public function isValid()
+    {
+        $valid = parent::isValid();
+
+        $data = $this->getData();
+
+        $student_errors = $this->get('student_num')->getMessages();
+
+        $first_initial = strtoupper(substr($data['first_name'], 0, 1));
+        $last_initial = strtoupper(substr($data['last_name'], 0, 1));
+        $student_num = $data['student_num'];
+
+        if (
+            ! preg_match(
+                '/^' . $first_initial . $last_initial . '[0-9]{6}$/',
+                $student_num
+            )
+        ) {
+            array_push($student_errors, 'Student Number does not include first and last initials.');
+            $valid = false;
+        }
+
+        if ($this->_is_update) {
+            return $valid;
+        }
+
+        $student_query = new DormStudentQuery();
+
+        if ($student_query->findByStudentNum($student_num) != NULL) {
+            array_push(
+                $student_errors,
+                "Student already exists with number '$student_num'."
+            );
+            $valid = false;
+        }
+
+        $this->get('student_num')->setMessages($student_errors);
+        return $valid;
     }
 }
 
