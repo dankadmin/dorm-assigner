@@ -165,4 +165,30 @@ class StudentController extends AbstractActionController
 
         return new ViewModel(array('form' => $form));
     }
+
+   /**
+    * viewAction
+    *
+    * View Student by ID
+    *
+    * @param string $student_id ID, which is the primary key for the Student table
+    *
+    * @return ViewModel
+    */
+    public function viewAction()
+    {
+        $student_id = $this->params('studentId');
+        $student = $this->_student_query->findById($student_id);
+
+        if ($student == NULL) {
+            throw new \Exception("No Student Found for '$student_id'");
+        }
+
+        $form = new StudentForm();
+        $form->setIsUpdate();
+
+        $form->setData($student->getArrayCopy());
+
+        return new ViewModel(array('form' => $form, 'id' => $student_id));
+    }
 }

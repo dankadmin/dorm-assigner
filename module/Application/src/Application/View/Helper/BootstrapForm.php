@@ -45,6 +45,8 @@ class BootstrapForm extends AbstractHelper
     private $_input_width;
     /** @var string $_label_width Width of bootstrap columns for labels, from 1 to 12. */
     private $_label_width;
+    /** @var boolean $_is_view_only Is this form only meant to view data. */
+    private $_is_view_only;
 
    /**
     * addOutput
@@ -151,6 +153,8 @@ class BootstrapForm extends AbstractHelper
 
         $this->_input_width = $this->getOption('input-width', 9);
         $this->_label_width = 12 - $this->_input_width;
+
+        $this->_is_view_only = $this->getOption('view-only', false);
     }
 
    /**
@@ -160,9 +164,8 @@ class BootstrapForm extends AbstractHelper
     *
     * @param \Zend\Form\Element $element Form element to add.
     */
-    public function addFormElement($element)
+    private function addFormElement($element)
     {
-        $this->addOutput('<div class="form-group">', 1);
 
         $type = $element->getAttribute('type');
         $name = $element->getAttribute('name'); 
@@ -170,12 +173,32 @@ class BootstrapForm extends AbstractHelper
         $label = $element->getLabel();
         $id = $element->getAttribute('id'); 
 
+        if ($this->_is_view_only) {
+            if ($type == 'hidden' || $type =='submit') {
+                return;
+            } else {
+                $this->addOutput('<div class="form-group">', 1);
+                $this->addOutput(
+                    '<label class="control-label col-xs-' . $this->_label_width . '">' . $label . '</label>'
+                );
+                $this->addOutput('<div class="col-xs-' . $this->_input_width . '">', 1);
+
+                $this->addOutput('<div class="form-control">' . $value . '</div>');
+
+                $this->addOutput('</div>', -1);
+                $this->addOutput('</div>', -1);
+                return;
+            }
+        }
+
         $validation_string = $this->getValidatorsString($name);
 
         $required_string = '';
         if ($element->getOption('required')) {
             $required_string = 'required="required" ';
         }
+
+        $this->addOutput('<div class="form-group">', 1);
 
         if ($type != 'hidden' && $type != 'submit') {
             $this->addOutput(
@@ -218,7 +241,7 @@ class BootstrapForm extends AbstractHelper
 
         } else if ($type == 'select') {
 
-            $this->addOUtput(
+            $this->addOutput(
                 '<select class="form-control" name="' . $name . '" '
                     . $validation_string
                     . $required_string
@@ -312,20 +335,35 @@ class BootstrapForm extends AbstractHelper
             $form_class = 'form-horizontal';
         }
 
-        $this->addOutput(
-            '<form method="POST" '
-                . 'class="' . $form_class . '" '
-                . 'name="' . $form_name . '" '
-                . 'id="' . $form_name . '" '
-                . '>',
-            1
-        );
+        if ($this->_is_view_only) {
+            $this->addOutput(
+                '<div '
+                    . 'class="' . $form_class . '" '
+                    . 'name="' . $form_name . '" '
+                    . 'id="' . $form_name . '" '
+                    . '>',
+                1
+            );
+        } else {
+            $this->addOutput(
+                '<form method="POST" '
+                    . 'class="' . $form_class . '" '
+                    . 'name="' . $form_name . '" '
+                    . 'id="' . $form_name . '" '
+                    . '>',
+                1
+            );
+        }
 
         foreach ($this->_form as $element) {
             $this->addFormElement($element);
         }
 
-        $this->addOutput('</form>', -1);
+        if ($this->_is_view_only) {
+            $this->addOutput('</div>', -1);
+        } else {
+            $this->addOutput('</form>', -1);
+        }
 
         return $this->_output;
     }

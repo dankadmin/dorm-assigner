@@ -46,6 +46,19 @@ return array(
                     ),
                 ),
             ),
+            'viewStudent' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/student/view/:studentId',
+                    'constraints' => array(
+                        'studentId' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Student',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
