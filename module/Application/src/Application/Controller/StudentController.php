@@ -128,7 +128,8 @@ class StudentController extends AbstractActionController
         $student = $this->_student_query->findById($student_id);
 
         if ($student == NULL) {
-            throw new \Exception("No Student Found for '$student_id'");
+            $this->getResponse()->setStatusCode(404);
+            return $this->getResponse();
         }
 
         $form = new StudentForm();
@@ -181,13 +182,57 @@ class StudentController extends AbstractActionController
         $student = $this->_student_query->findById($student_id);
 
         if ($student == NULL) {
-            throw new \Exception("No Student Found for '$student_id'");
+            $this->getResponse()->setStatusCode(404);
+            return $this->getResponse();
         }
 
         $form = new StudentForm();
-        $form->setIsUpdate();
 
         $form->setData($student->getArrayCopy());
+
+        return new ViewModel(array('form' => $form, 'id' => $student_id));
+    }
+
+   /**
+    * deleteAction
+    *
+    * Delete Student by ID
+    *
+    * @param string $student_id ID, which is the primary key for the Student table
+    *
+    * @return ViewModel
+    */
+    public function deleteAction()
+    {
+        $student_id = $this->params('studentId');
+        $student = $this->_student_query->findById($student_id);
+
+        if ($student == NULL) {
+            $this->getResponse()->setStatusCode(404);
+            return $this->getResponse();
+        }
+
+        $form = new StudentForm();
+
+        $form->setData($student->getArrayCopy());
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            if ($request->getPost('delete') == 'Yes, Delete') {
+                $student->setStatus('inactive');
+                $student->save();
+
+                $student_name = $student->getFullName();
+
+                $message = "Removed record for '$student_name'.";
+
+                return new ViewModel(array(
+                    'form' => $form,
+                    'id' => $student_id,
+                    'success' => $message,
+                ));
+            }
+        }
 
         return new ViewModel(array('form' => $form, 'id' => $student_id));
     }
