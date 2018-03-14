@@ -28,6 +28,7 @@
                             <th>Date of Birth</th>
                             <th>Address</th>
                             <th>Phone Number</th>
+                            <th>View</th>
                             <th>Edit</th>
                         </tr>
                     </thead>
@@ -50,6 +51,7 @@
                                     . $student['zip'];
                             ?></td>
                             <td><?php echo $student['phone_number']; ?></td>
+                            <td><a class="btn btn-primary" href="<?php echo $this->url('viewStudent', array('studentId' => $student['id']));?>">View</a></td>
                             <td><a class="btn btn-primary" href="<?php echo $this->url('editStudent', array('studentId' => $student['id']));?>">Edit</a></td>
                         </tr>
                         <?php } ?>

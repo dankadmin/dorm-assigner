@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-md-6 col-sm-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Student Information</h3>
+            </div>
+            <div class="panel-body"><?php
+                echo $this->bootstrapForm($form, array(
+                    'indent' => 4,
+                    'view-only' => true
+            )); ?>
+                <div class="form-group">
+                    <div class="col-xs-offset-3 col-xs-10">
+                        <a class="btn btn-primary submit-btn" href="<?php echo $this->url('editStudent', array('studentId' => $id));?>">Edit Student</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
