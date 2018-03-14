@@ -1,0 +1,48 @@
+<?php if (! isset($this->success)) {?>
+<div class="row">
+    <div class="col-md-6 col-sm-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Delete Student</h3>
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-warning">
+                    <h4>Warning!</h4>
+                </div>
+                <p>Are you certain that you would like to delete this student?</p>
+                <form action="" method="POST">
+                    <input class="btn btn-primary submit-btn" value="Yes, Delete" id="deletestudent" name="delete" type="submit" />
+                    <a class="btn btn-primary" href="<?php echo $this->url('viewStudent', array('studentId' => $id));?>">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<div class="row">
+    <div class="col-md-6 col-sm-offset-2">
+        <div class="panel panel-primary">
+            <?php if (isset($this->success)) {?>
+                <div class="panel-heading">
+                    <h3 class="panel-title">Deleted Student</h3>
+                </div>
+                <div class="panel-body">
+                <div class="alert alert-info">
+                    <?php echo $this->success; ?>
+                </div>
+            <?php } else { ?>
+                <div class="panel-heading">
+                    <h3 class="panel-title">Student Information</h3>
+                </div>
+                <div class="panel-body">
+            <?php } ?>
+            <?php
+                echo $this->bootstrapForm($form, array(
+                    'indent' => 4,
+                    'view-only' => true
+                )); ?>
+            </div>
+        </div>
+    </div>
+</div>
