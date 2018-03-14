@@ -133,6 +133,7 @@ class StudentController extends AbstractActionController
 
         $form = new StudentForm();
         $form->get('submit')->setValue('Update Student');
+        $form->setIsUpdate();
 
         $form->setData($student->getArrayCopy());
 

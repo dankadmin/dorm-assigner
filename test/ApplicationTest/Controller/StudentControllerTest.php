@@ -33,7 +33,7 @@ class StudentControllerTest extends AbstractHttpControllerTestCase
     }
 
 
-    public function testCanSubmitNewStudentWithName()
+    public function testCanSubmitNewStudent()
     {
         $student_num = 'JD123457';
         $this->dispatch(
@@ -61,6 +61,58 @@ class StudentControllerTest extends AbstractHttpControllerTestCase
         $this->assertQueryContentRegex('.alert', '/.*Success.*./');
 
         $student = $this->_student_query->findByStudentNum($student_num);
+        $student->hardDelete();
+    }
+
+    public function testDuplicateStudentIdFailsWithMessage()
+    {
+        $student_num = 'JD123459';
+
+
+        $data = array(
+            'id' => '',
+            'first_name' => 'John III',
+            'last_name' => 'Doe',
+            'address_1' => '123 Main Street',
+            'city' => 'Someplace',
+            'state' => 'Alabama',
+            'zip' => '12345',
+            'gender' => 'male',
+            'student_num' => $student_num,
+            'birth_date' => '1970-01-01',
+            'phone_number' => '7575551234',
+            'status' => 'active',
+        );  
+
+        $student = $this->_student_query->new();
+        $student->exchangeArray($data);
+        $student->save();
+
+
+        $this->dispatch(
+            '/student/add',
+            'POST',
+            array(
+                'id' => '',
+                'first_name' => 'John Jr.',
+                'last_name' => 'Doe',
+                'address_1' => '123 Main Street',
+                'city' => 'Someplace',
+                'state' => 'AL',
+                'zip' => '12345',
+                'gender' => 'male',
+                'student_num' => $student_num,
+                'birth_date' => '1970-01-01',
+                'phone_number' => '7575551234',
+                'status' => 'active',
+                'submit' => 'Add Student'
+            )
+        );
+
+        $this->assertResponseStatusCode(200);
+
+        $this->assertQueryContentRegex('.alert', '/.*Student ID: Student already exists with number.*./');
+
         $student->hardDelete();
     }
 
