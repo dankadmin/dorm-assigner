@@ -1,0 +1,40 @@
+<?php
+    $this->headLink()->prependStylesheet('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css');
+    $this->inlineScript()->prependFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js');
+?>
+<?php if (isset($this->student_name)) { ?>
+<div class="row">
+    <div class="col-md-6 col-sm-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Update Student</h3>
+            </div>
+            <div class="panel-body">
+                <p>Success. Updated student infomation for "<?php echo $this->student_name; ?>"</p>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<div class="row">
+    <div class="col-md-6 col-sm-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Edit Student</h3>
+            </div>
+            <div class="panel-body">
+                <?php
+                    echo $this->partial(
+                        'application/partial/form.phtml',
+                        array(
+                            'form' => $this->form,
+                            'messages' => $this->messages,
+                            'success' => $this->success,
+                        )
+                    );
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
