@@ -103,3 +103,5 @@ class Bootstrap
 
 Bootstrap::init();
 Bootstrap::chroot();
+
+require_once(__DIR__ . '/Factories/StudentDataFactory.php');
