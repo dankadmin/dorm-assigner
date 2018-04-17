@@ -87,7 +87,7 @@ class StudentController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $student = $this->_student_query->new();
+                $student = $this->_student_query->newStudent();
 
                 $data = $form->getData();
 

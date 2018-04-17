@@ -84,7 +84,7 @@ class StudentControllerTest extends AbstractHttpControllerTestCase
             'status' => 'active',
         );  
 
-        $student = $this->_student_query->new();
+        $student = $this->_student_query->newStudent();
         $student->exchangeArray($data);
         $student->save();
 

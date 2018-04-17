@@ -32,6 +32,7 @@ class DormStudentQueryTest extends AbstractHttpControllerTestCase
 {
     private $_student_query;
     private $_dorm_student_mock;
+    private $_test_student_id;
 
     /** 
       * setUp
@@ -48,6 +49,38 @@ class DormStudentQueryTest extends AbstractHttpControllerTestCase
         $this->dispatch('/student/add');
 
         $this->_student_query = new DormStudentQuery();
+
+        $this->_test_student_id = 'JD112233';
+
+        $data = array(
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'address_1' => '123 Main Street',
+            'city' => 'Someplace',
+            'state' => 'MO',
+            'zip' => '12345',
+            'gender' => 'male',
+            'student_num' => $this->_test_student_id,
+            'birth_date' => '1970-01-01',
+            'phone_number' => '7575551234',
+            'status' => 'active',
+        );
+
+
+        $new_student = $this->_student_query->newStudent();
+        $new_student->exchangeArray($data);
+        $new_student->save();
+    }
+
+    /** 
+      * tearDown
+      *
+      * Tear Down tests
+      */
+    public function tearDown()
+    {
+        $new_student = $this->_student_query->findByStudentNum($this->_test_student_id);
+        $new_student->hardDelete();
     }
 
     /** 
@@ -56,7 +89,7 @@ class DormStudentQueryTest extends AbstractHttpControllerTestCase
       */
     public function testDormStudentQueryCanCreateNewStudent()
     {
-        $student = $this->_student_query->new();
+        $student = $this->_student_query->newStudent();
         $this->assertTrue($student instanceof \Application\Classes\Model\DormStudent);
     }
 
@@ -80,6 +113,8 @@ class DormStudentQueryTest extends AbstractHttpControllerTestCase
     {
         $students = $this->_student_query->fetchAll();
 
+        $this->assertTrue(count($students) > 0);
+
         $student_id = $students[0]->getId();
 
         $student = $this->_student_query->findById($student_id);
@@ -94,6 +129,7 @@ class DormStudentQueryTest extends AbstractHttpControllerTestCase
       */
     public function testDormStudentQueryCanFindStudentByStudentNum()
     {
+
         $students = $this->_student_query->fetchAll();
 
         $student_num = $students[0]->getStudentNum();

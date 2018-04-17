@@ -49,7 +49,7 @@ class DormStudentTest extends AbstractHttpControllerTestCase
 
         $this->_student_query = new DormStudentQuery();
 
-        $this->_student = $this->_student_query->new();
+        $this->_student = $this->_student_query->newStudent();
     }
 
     /** 
@@ -110,7 +110,7 @@ class DormStudentTest extends AbstractHttpControllerTestCase
             'status' => 'active',
         );
 
-        $new_student = $this->_student_query->new();
+        $new_student = $this->_student_query->newStudent();
 
         $new_student->exchangeArray($data);
 
@@ -150,7 +150,7 @@ class DormStudentTest extends AbstractHttpControllerTestCase
 
         $this->_student->save();
 
-        $duplicate_student = $this->_student_query->new();
+        $duplicate_student = $this->_student_query->newStudent();
 
         $duplicate_student->exchangeArray($data);
 
