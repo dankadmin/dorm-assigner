@@ -98,7 +98,8 @@ class DormStudentQuery
       */
     private function getDormStudentFromStudent($student)
     {
-        $contact = $this->_contact_query::create()
+        $contact_query = $this->_contact_query;
+        $contact = $contact_query::create()
             ->filterByStatus('active')
             ->findOneByStudentId($student->getId());
 
@@ -119,7 +120,7 @@ class DormStudentQuery
       *
       * @return DormStudent
       */
-    public function new()
+    public function newStudent()
     {
         return new $this->_dorm_student(new $this->_student_class(), new $this->_contact_class());
     }
@@ -133,7 +134,8 @@ class DormStudentQuery
       */
     public function fetchAll()
     {
-        $students = $this->_student_query::create()
+        $student_query = $this->_student_query;
+        $students = $student_query::create()
             ->filterByStatus('active')
             ->find();
 
@@ -162,7 +164,8 @@ class DormStudentQuery
       */
     public function findById($id)
     {
-        $student = $this->_student_query::create()
+        $student_query = $this->_student_query;
+        $student = $student_query::create()
             ->filterByStatus('active')
             ->findOneById($id);
 
@@ -184,7 +187,8 @@ class DormStudentQuery
       */
     public function findByStudentNum($student_num)
     {
-        $student = $this->_student_query::create()
+        $student_query = $this->_student_query;
+        $student = $student_query::create()
             ->filterByStatus('active')
             ->findOneByStudentNum($student_num);
 
