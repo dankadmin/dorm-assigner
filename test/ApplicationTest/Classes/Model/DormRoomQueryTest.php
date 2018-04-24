@@ -14,6 +14,7 @@ namespace ApplicationTest\Classes;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
+use Application\Classes\Model\DormStudentQuery;
 use Application\Classes\DormRoomQuery;
 
 /**
@@ -32,14 +33,16 @@ class DormRoomQueryTest extends AbstractHttpControllerTestCase
 {
     private $_faker;
     private $_dorm_query;
+    private $_student_query;
     private $_student_data;
 
     private $_student_1;
     private $_student_2;
-    private $_student_3;
 
     private $_room_1;
     private $_room_2;
+
+    private $_assignment_1;
 
     /** 
       * setUp
@@ -58,50 +61,114 @@ class DormRoomQueryTest extends AbstractHttpControllerTestCase
         $this->_faker = \Faker\Factory::create();
         $this->_student_data = new \Test\Factory\StudentDataFactory($this->_faker);
 
+        $this->_student_query = new DormStudentQuery();
+
 
         $this->_dorm_query = new DormRoomQuery();
 
+        $this->_student_1 = $this->_student_query->newStudent();
+        $this->_student_1->exchangeArray($this->_student_data->create());
+        $this->_student_1->save();
+
+        $this->_student_2 = $this->_student_query->newStudent();
+        $this->_student_2->exchangeArray($this->_student_data->create());
+        $this->_student_2->save();
+
+        $this->_room_1 = \PipelinePropel\RoomQuery::create()->findPk(rand(1,288));
+        $this->_room_2 = \PipelinePropel\RoomQuery::create()->findPk(rand(1,288));
+
+        $this->_assignment_1 = new \PipelinePropel\RoomAssignment();
+        $this->_assignment_1->setRoom($this->_room_1);
+        $this->_assignment_1->setStudent(
+            \PipelinePropel\StudentQuery::create()->findPk(
+                $this->_student_1->getId()
+            )
+        );
+        $this->_assignment_1->save();
+
+        $this->_assignment_2 = new \PipelinePropel\RoomAssignment();
     }
 
     /** 
-      * testDormRoomQueryCanCreateNewRoom
+      * tearDown
+      *
+      * Tear down tests
+      */
+    public function tearDown()
+    {
+        $this->_assignment_1->delete();
+        $this->_assignment_2->delete();
+
+        $this->_student_1->hardDelete();
+        $this->_student_2->hardDelete();
+    }
+
+    /** 
+      * testDormRoomQueryCanFindARoomByRoom
       *
       */
-    public function testDormRoomQueryCanCreateNewRoom()
+    public function testDormRoomQueryCanFindARoomByRoom()
     {
-        //$student = $this->_dorm_query->new();
-        //$this->assertTrue($student instanceof \Application\Classes\DormRoom);
+        $this->assertNotNull($this->_dorm_query->findByRoom($this->_room_1));
+    }
 
-        $ass = new \PipelinePropel\RoomAssignment();
-        $room = \PipelinePropel\RoomQuery::create()->findPk(265);
-        $student = \PipelinePropel\StudentQuery::create()->findPk(7);
-        $ass->setRoom($room);
-        $ass->setStudent($student);
-        //$ass->save();
-        //$dorm = new \Application\Classes\DormRoom($ass);
+    /** 
+      * testDormRoomQueryCanFindARoomById
+      *
+      */
+    public function testDormRoomQueryCanFindARoomById()
+    {
+        $room_id = $this->_room_1->getId();
+        $this->assertNotNull($this->_dorm_query->findByRoomId($room_id));
+    }
 
-        $dorm_query = new \Application\Classes\DormRoomQuery();
+    /** 
+      * testDormRoomQueryGivesNullOnFindNonExistantRoomById
+      *
+      */
+    public function testDormRoomQueryGivesNullOnFindNonExistantRoomById()
+    {
+        $this->assertNull($this->_dorm_query->findByRoomId(5000));
+    }
 
-        $test = $dorm_query->findByRoomId(8);
+    /** 
+      * testDormRoomQueryCanFindARoomByStudent
+      *
+      */
+    public function testDormRoomQueryCanFindARoomByStudent()
+    {
+        $student = \PipelinePropel\StudentQuery::create()->findPk(
+            $this->_student_1->getId()
+        );
 
-        $test->assignStudent($student);
+        $this->assertNotNull($this->_dorm_query->findByStudent($student));
+    }
 
-        $room2 = \PipelinePropel\RoomQuery::create()->findPk(175);
+    /** 
+      * testDormRoomQueryCanFindUnoccupiedRooms
+      *
+      */
+    public function testDormRoomQueryCanFindUnoccupiedRooms()
+    {
+        $this->assertNotNull($this->_dorm_query->findUnoccupied());
+    }
 
-        $test2 = $dorm_query->findByRoom($room2);
-        $test2->assignStudent($student);
+    /** 
+      * testDormRoomQueryCanFindUnoccupiedRoomsForMales
+      *
+      */
+    public function testDormRoomQueryCanFindUnoccupiedRoomsForMales()
+    {
+        $this->assertNotNull($this->_dorm_query->findUnoccupied("male"));
+    }
 
-        /*
-        echo "Gender: " . $dorm_query->findGender($room2) . "\n";
-
-        foreach ($dorm_query->findUnoccupied("female") as $room) {
-            echo $room->getRoomName() . "\n";
-        }
-
-        var_dump($test2->getRoomName());
-        */
-
-        $this->assertEquals($dorm_query->findGender($room2), "male");
+    /** 
+      * testDormRoomQueryCanFindUnoccupiedRoomsForFemales
+      *
+      */
+    public function testDormRoomQueryCanFindUnoccupiedRoomsForFemales()
+    {
+        $this->assertNotNull($this->_dorm_query->findUnoccupied("female"));
     }
 
 }

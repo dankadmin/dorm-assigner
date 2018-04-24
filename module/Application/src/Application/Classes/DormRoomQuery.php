@@ -94,10 +94,7 @@ class DormRoomQuery
                 } else {
                     $occupied = $this->findGender($room);
                     if ($occupied == "unoccupied" || $occupied == $gender) {
-                        echo "[$occupied]\n";
                         array_push($room_list, $dorm_room);
-                    } else {
-                        echo "[$occupied]\n";
                     }
                 }
             }
