@@ -294,6 +294,22 @@ class DormRoom
     }
 
     /**
+      * isFull
+      *
+      * Return whether or not the room is full.
+      *
+      * @returns bool
+      */
+    public function isFull()
+    {
+        if (count($this->_assignments) >= self::ROOM_SLOTS) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
       * getRoomName
       *
       * Returns a string unique to this room

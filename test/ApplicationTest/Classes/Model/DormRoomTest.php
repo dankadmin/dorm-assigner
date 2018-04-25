@@ -261,4 +261,25 @@ class DormRoomTest extends AbstractHttpControllerTestCase
 
         $dorm_room_b->unassignDormStudent($this->_student_1);
     }
+
+    /** 
+      * testDormRoomJustMakeSomeRooms
+      *
+      */
+    public function testDormRoomJustMakeSomeRooms()
+    {
+        /*
+        for ($i = 0; $i < 10; $i++) {
+            $student = $this->_student_query->newStudent();
+            $student->exchangeArray($this->_student_data->create());
+            $student->save();
+
+            $room = \PipelinePropel\RoomQuery::create()->findPk(rand(1,288));
+
+            $dorm_room = new \Application\Classes\DormRoom($room);
+
+            $dorm_room->assignDormStudent($student);
+        }
+        */
+    }
 }

@@ -16,8 +16,11 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Form\StudentForm;
+use Application\Form\AssignmentForm;
 
 use Application\Classes\Model\DormStudentQuery;
+use Application\Classes\DormRoomQuery;
+use Application\Classes\DormRoomException;
 
 use PipelinePropel\Student;
 use PipelinePropel\ContactInfo;
@@ -48,6 +51,7 @@ class StudentController extends AbstractActionController
     public function __construct()
     {
         $this->_student_query = new DormStudentQuery();
+        $this->_dorm_room_query = new DormRoomQuery();
     }
 
    /**
@@ -155,16 +159,21 @@ class StudentController extends AbstractActionController
                 return new ViewModel(array(
                     'form' => $form,
                     'success' => $message,
+                    'id' => $student_id,
                 ));
             } else {
                 return new ViewModel(array(
                     'form' => $form,
-                    'messages' => $form->getMessages()
+                    'messages' => $form->getMessages(),
+                    'id' => $student_id,
                 ));
             }
         }
 
-        return new ViewModel(array('form' => $form));
+        return new ViewModel(array(
+            'form' => $form,
+            'id' => $student_id,
+        ));
     }
 
    /**
@@ -236,4 +245,123 @@ class StudentController extends AbstractActionController
 
         return new ViewModel(array('form' => $form, 'id' => $student_id));
     }
+
+   /**
+    * assignAction
+    *
+    * Edit Student by ID
+    *
+    * @return ViewModel
+    */
+    public function assignAction()
+    {
+        $student_id = $this->params('studentId');
+        $student = $this->_student_query->findById($student_id);
+
+        if ($student == NULL) {
+            $this->getResponse()->setStatusCode(404);
+            return $this->getResponse();
+        }
+
+        $student_form = new StudentForm();
+
+        $student_form->setData($student->getArrayCopy());
+
+
+        $rooms = $this->_dorm_room_query->findUnoccupied($student->getGender());
+        $room_list = array('none' => 'None');
+        foreach ($rooms as $room) {
+            $room_list[$room->getRoom()->getId()] = $room->getRoomName();
+        }
+        $form = new AssignmentForm($room_list);
+        $form->get('submit')->setValue('Assign Student');
+
+        $dorm_room = $this->_dorm_room_query->findByStudent($student->getStudent());
+
+        if ($dorm_room == NULL) {
+            $form->setData(array(
+                'room_id' => 'none',
+            ));
+        } else {
+            $form->setData(array(
+                'room_id' => $dorm_room->getRoom()->getId(),
+            ));
+        }
+
+        $form->setIsUpdate();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+
+            $student_name = $student->getFullName();
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                if ($data['room_id'] == 'none') {
+                    if ($dorm_room != NULL) {
+                        $dorm_room->unassignDormStudent($student);
+                        $message = "Success: Unassigned '$student_name'.";
+                    } else {
+                        $message = "Success: '$student_name' is not assigned.";
+                    }
+
+
+                    return new ViewModel(array(
+                        'student_form' => $student_form,
+                        'assignment_form' => $form,
+                        'id' => $student_id,
+                        'success' => $message,
+                    ));
+                }
+
+                $new_dorm_room = $this->_dorm_room_query->findByRoomId($data['room_id']);
+                try {
+                    $result = $new_dorm_room->assignDormStudent($student);
+                } catch (DormRoomException $e) {
+                    $code = $e->getCode();
+                    return new ViewModel(array(
+                        'student_form' => $student_form,
+                        'assignment_form' => $form,
+                        'id' => $student_id,
+                        'messages' => array('room_id' => array($e->getMessage())),
+                    ));
+                }
+
+                if (!$result) {
+                    return new ViewModel(array(
+                        'student_form' => $student_form,
+                        'assignment_form' => $form,
+                        'id' => $student_id,
+                        'messages' => array('room_id', array("Assignment failed.")),
+                    ));
+                }
+
+
+                $message = "Success: Assigned '$student_name' to '{$new_dorm_room->getRoomName()}'.";
+
+                return new ViewModel(array(
+                    'student_form' => $student_form,
+                    'assignment_form' => $form,
+                    'id' => $student_id,
+                    'success' => $message,
+                ));
+            } else {
+                return new ViewModel(array(
+                    'student_form' => $student_form,
+                    'assignment_form' => $form,
+                    'id' => $student_id,
+                    'messages' => $form->getMessages()
+                ));
+            }
+        }
+
+        return new ViewModel(array(
+            'student_form' => $student_form,
+            'assignment_form' => $form,
+            'id' => $student_id,
+        ));
+    }
+
 }

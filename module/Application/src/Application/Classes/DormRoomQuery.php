@@ -65,7 +65,7 @@ class DormRoomQuery
         return NULL;
     }
 
-    public function findUnoccupied($gender="")
+    public function findUnoccupied($gender=NULL)
     {
         $room_list = array();
 
@@ -73,15 +73,14 @@ class DormRoomQuery
 
         foreach ($rooms as $room) {
             $dorm_room = $this->findByRoom($room);
-            if ($dorm_room == NULL) {
-                next;
+            if ($dorm_room == NULL || $dorm_room->isFull()) {
+                continue;
             }
 
             if ($dorm_room->getGender() == NULL) {
                 array_push($room_list, $dorm_room);
             } else {
-                $occupied = $dorm_room->getGender();
-                if ($occupied == "unoccupied" || $occupied == $gender) {
+                if ($dorm_room->getGender() == $gender) {
                     array_push($room_list, $dorm_room);
                 }
             }
