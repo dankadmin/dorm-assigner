@@ -34,6 +34,12 @@
                         )
                     );
                 ?>
+                <div class="form-group">
+                    <div class="col-xs-offset-3 col-xs-10">
+                        <a class="btn btn-primary submit-btn" href="<?php echo $this->url('viewStudent', array('studentId' => $id));?>">View Student</a>
+                        <a class="btn btn-primary submit-btn" href="<?php echo $this->url('assignStudent', array('studentId' => $id));?>">Assign Student</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
