@@ -249,7 +249,7 @@ class StudentController extends AbstractActionController
    /**
     * assignAction
     *
-    * Edit Student by ID
+    * Assign Student by ID
     *
     * @return ViewModel
     */
@@ -364,4 +364,46 @@ class StudentController extends AbstractActionController
         ));
     }
 
+   /**
+    * historyAction
+    *
+    * View Student's assignment history.
+    *
+    * @return ViewModel
+    */
+    public function historyAction()
+    {
+        $student_id = $this->params('studentId');
+        $student = $this->_student_query->findById($student_id);
+
+        if ($student == NULL) {
+            $this->getResponse()->setStatusCode(404);
+            return $this->getResponse();
+        }
+
+        $assignments = \PipelinePropel\RoomAssignmentQuery::create()
+            ->filterByStudent($student->getStudent())
+            ->find();
+
+        $assignment_data = array();
+
+        foreach ($assignments as $assignment) {
+            $item = array();
+
+            $dorm_room = $this->_dorm_room_query->findByRoom($assignment->getRoom());
+
+            $item['room'] = $dorm_room->getRoomName();
+            $item['status'] = $assignment->getStatus();
+            $item['created'] = $assignment->getCreatedAt()->format('Y-m-d H:i:s');
+            $item['updated'] = $assignment->getUpdatedAt()->format('Y-m-d H:i:s');
+
+            array_push($assignment_data, $item);
+        }
+
+        return new ViewModel(array(
+            'id' => $student_id,
+            'student' => $student->getArrayCopy(),
+            'assignments' => $assignment_data,
+        ));
+    }
 }
