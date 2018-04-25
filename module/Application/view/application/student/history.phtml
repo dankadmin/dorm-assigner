@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Student Room Assignment History</h3>
+            </div>
+            <div class="panel-body">
+                Name: <?php echo $student['full_name']; ?><br />
+                Student Number: <?php echo $student['student_num']; ?><br />
+                Student Gender: <?php echo $student['gender']; ?><br />
+                <a class="btn btn-primary submit-btn" href="<?php echo $this->url('viewStudent', array('studentId' => $id));?>">View Student</a>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Last Updated</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <?php foreach ($assignments as $assignment) { ?>
+                        <tr>
+                            <td><?php echo $assignment['room']; ?></td>
+                            <td><?php echo $assignment['status']; ?></td>
+                            <td><?php echo $assignment['created']; ?></td>
+                            <td><?php echo $assignment['updated']; ?></td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
