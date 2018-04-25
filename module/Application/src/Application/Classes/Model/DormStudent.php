@@ -48,6 +48,16 @@ class DormStudent
     }
 
     /**
+      * getStudent
+      *
+      * @return \PipelinePropel\Student
+      */
+    public function getStudent()
+    {
+        return $this->_student;
+    }
+
+    /**
       * getId
       *
       * @return string
@@ -377,6 +387,14 @@ class DormStudent
       */
     public function hardDelete()
     {
+        $assignments = \PipelinePropel\RoomAssignmentQuery::create()
+            ->filterByStudent($this->_student)
+            ->find();
+
+        foreach ($assignments as $assignment) {
+            $assignment->delete();
+        }
+
         $this->_contact->delete();
         $this->_student->delete();
     }

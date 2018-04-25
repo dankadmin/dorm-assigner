@@ -40,20 +40,7 @@ class DormRoomQuery
             return NULL;
         }
 
-        $assignment = \PipelinePropel\RoomAssignmentQuery::create()
-            ->filterByRoom($room)
-            ->filterByStatus('active')
-            ->findOne();
-
-        if ($assignment != NULL) {
-            $dorm_room = new \Application\Classes\DormRoom($assignment);
-            return $dorm_room;
-        }
-
-        $assignment = new \PipelinePropel\RoomAssignment();
-        $assignment->setRoom($room);
-
-        $dorm_room = new \Application\Classes\DormRoom($assignment);
+        $dorm_room = new \Application\Classes\DormRoom($room);
         return $dorm_room;
     }
 
@@ -68,8 +55,10 @@ class DormRoomQuery
             ->filterByStatus('active')
             ->findOne();
 
+
         if ($assignment != NULL) {
-            $dorm_room = new \Application\Classes\DormRoom($assignment);
+            $room = $assignment->getRoom();
+            $dorm_room = new \Application\Classes\DormRoom($room);
             return $dorm_room;
         }
 
@@ -88,14 +77,12 @@ class DormRoomQuery
                 next;
             }
 
-            if ($dorm_room->getStudent() == NULL) {
-                if ( $gender == "") {
+            if ($dorm_room->getGender() == NULL) {
+                array_push($room_list, $dorm_room);
+            } else {
+                $occupied = $dorm_room->getGender();
+                if ($occupied == "unoccupied" || $occupied == $gender) {
                     array_push($room_list, $dorm_room);
-                } else {
-                    $occupied = $this->findGender($room);
-                    if ($occupied == "unoccupied" || $occupied == $gender) {
-                        array_push($room_list, $dorm_room);
-                    }
                 }
             }
         }

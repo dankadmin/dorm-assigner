@@ -12,6 +12,14 @@
 
 namespace Application\Classes;
 
+use Application\Classes\DormRoomException;
+use PipelinePropel\Room;
+use PipelinePropel\RoomQuery;
+use PipelinePropel\RoomAssignment;
+use PipelinePropel\RoomAssignmentQuery;
+use Application\Classes\Model\DormStudent;
+use PipelinePropel\Student;
+
 
 /**
   * Dorm Room
@@ -27,106 +35,271 @@ namespace Application\Classes;
   */
 class DormRoom
 {
+    /** CONSTANTS **/
 
-    private $_assignment;
+    /** @var int ROOM_SLOTS Number of students which may occupy a single room */
+    const ROOM_SLOTS = 2;
+
+    /** PROPERTIES **/
+
+    /** @var array $_assignments Array of active room RoomAssignments. */
+    private $_assignments;
 
     /** @var string $_name Dorm room name. */
     private $_name;
 
-    /** @var string $_assigned Whether room is occuped. May be 'unoccupied', 'partial', or 'full'. */
-    private $_assigned;
-
-    /** @var string $_gender Gender of occupied room. May be 'male', 'female', or 'unoccupied'. */
+    /** @var string $_gender Gender of occupied room. May be 'male', 'female', or NULL. */
     private $_gender;
 
-    /** @var \PipelinePropel\Room $_room. */
+    /** @var Room $_room Dorm room. */
     private $_room;
-    private $_student;
 
     /**
       * Constructor
       *
+      * @param Room $room
       */
-    public function __construct(\PipelinePropel\RoomAssignment $assignment)
+    public function __construct(Room $room)
     {
-        $this->_assignment = $assignment;
-        $this->_room = $this->_assignment->getRoom();
-        $this->_student = $this->_assignment->getStudent();
-        //$this->_gender = $this->findGender();
+        $this->_room = $room;
+        $this->addAssignmentsForRoom();
     }
 
-    private function disableCurrentAssignments()
+    /**
+      * setRoomGender
+      *
+      * Set the room's gender based upon the gender of the containing unit.
+      */
+    private function setRoomGender()
     {
-        if (!$this->_assignment->isNew()) {
-            $this->_assignment->setStatus('inactive');
-            $this->_assignment->save();
+        $this->_gender = NULL;
+
+        $unit = $this->_room->getUnit();
+        $rooms = RoomQuery::create()
+            ->filterByUnit($unit)
+            ->find();
+
+        $assignments = RoomAssignmentQuery::create()
+            ->filterByStatus('active')
+            ->filterByRoom($rooms)
+            ->find();
+
+        if (count($assignments) > 0) {
+            $student = $assignments[0]->getStudent();
+            $this->_gender = $student->getGender();
         }
+    }
 
-        if ($this->_student != NULL) {
-            $assignments = \PipelinePropel\RoomAssignmentQuery::create()
-                ->filterByStudent($this->_student)
-                ->filterByStatus('active')
-                ->find();
+    /**
+      * addAssignmentsForRoom
+      *
+      * Search forroom assignments for this room and adds them to the class.
+      */
+    private function addAssignmentsForRoom()
+    {
 
-            foreach ($assignments as $assignment) {
-                $assignment->setStatus('inactive');
-                $assignment->save();
-            }
+        $this->_assignments = array();
+        $this->setRoomGender();
+
+        $room_assignments = RoomAssignmentQuery::create()
+            ->filterByRoom($this->_room)
+            ->filterByStatus('active')
+            ->find();
+
+        foreach ($room_assignments as $assignment) {
+            $this->addAssignment($assignment);
         }
+    }
 
-        if ($this->_room != NULL) {
-            $assignments = \PipelinePropel\RoomAssignmentQuery::create()
-                ->filterByRoom($this->_room)
-                ->filterByStatus('active')
-                ->find();
+    /**
+      * addAssignment
+      *
+      * Add a new assignment to this room if there are available slots and set
+      * the rest to inactive.
+      *
+      * @param RoomAssignment $assignment
+      *
+      * @return bool
+      */
+    private function addAssignment($assignment)
+    {
+        if (count($this->_assignments) > self::ROOM_SLOTS) {
+            $assignment->setStatus('inactive');
+            $assignment->save();
+            return false;
+        } else {
+            $student = $assignment->getStudent();
+            $this->_gender = $student->getGender();
 
-            foreach ($assignments as $assignment) {
-                $assignment->setStatus('inactive');
-                $assignment->save();
-            }
+            array_push($this->_assignments, $assignment);
+            return true;
         }
-
-        $this->_assignment = new \PipelinePropel\RoomAssignment();
     }
 
     /**
       * assignStudent
       *
+      * Assign a Student to this room, removing any previous student assignments.
+      *
+      * @param Student $dorm_student
+      *
+      * @throws DormRoomException if the room is full or if the gender is not acceptable.
+      *
+      * @return bool
       */
-    public function assignStudent($student)
+    public function assignStudent(Student $student)
     {
-        $this->disableCurrentAssignments();
-        $this->_student = $student;
-        $this->_assignment->setRoom($this->_room);
-        $this->_assignment->setStudent($student);
-        $this->_assignment->save();
-        //$this->_gender = $this->findGender();
+        if (count($this->_assignments) >= self::ROOM_SLOTS) {
+            throw new DormRoomException(
+                "Attempt to assign student to full dorm room",
+                1
+            );
+        }
+
+        $gender = $student->getGender();
+
+        if ($this->_gender != NULL) {
+            if ($this->_gender != $gender) {
+                throw new DormRoomException(
+                    "Attempt to assign '$gender' student to a {$this->_gender} dorm room",
+                    2
+                );
+            }
+
+        }
+
+        $this->removeStudentAssignments($student);
+
+        $assignment = new RoomAssignment();
+        $assignment->setRoom($this->_room);
+        $assignment->setStudent($student);
+        $assignment->setStatus('active');
+        $assignment->save();
+
+        return $this->addAssignment($assignment);
     }
 
-    public function unassignStudent()
+    /**
+      * assignDormStudent
+      *
+      * Assign a DormStudent to this room.
+      *
+      * @param DormStudent $dorm_student
+      *
+      * @return bool
+      */
+    public function assignDormStudent(DormStudent $dorm_student)
     {
-        $this->disableCurrentAssignments();
+        $student = $dorm_student->getStudent();
+
+        return $this->assignStudent($student);
     }
 
+    /**
+      * removeStudentAssignments
+      *
+      * Searching for active assignments for student and sets them to inactive.
+      *
+      * @param Student $student Student to remove assignments for.
+      */
+    private function removeStudentAssignments(Student $student)
+    {
+        $assignments = RoomAssignmentQuery::create()
+            ->filterByStudent($student)
+            ->filterByStatus('active')
+            ->find();
+
+        foreach ($assignments as $assignment) {
+            $assignment->setStatus('inactive');
+            $assignment->save();
+        }
+    }
+
+    /**
+      * unassignDormStudent
+      *
+      * Unassign student from room
+      *
+      * @param DormStudent $dorm_student Dorm student to remove assignments for.
+      */
+    public function unassignDormStudent(DormStudent $dorm_student)
+    {
+        $student = $dorm_student->getStudent();
+
+        return $this->unassignStudent($student);
+    }
+
+    /**
+      * unassignStudent
+      *
+      * Unassign student from room
+      *
+      * @param Student $student Student to remove assignments for.
+      */
+    public function unassignStudent(Student $student)
+    {
+        foreach ($this->_assignments as $assignment) {
+            if ($assignment->getStudent() == $student) {
+                $assignment->setStatus('inactive');
+                $assignment->save();
+                return true;
+            }
+        }
+
+        if (count($this->_assignments) < 1) {
+            $this->setRoomGender();
+        }
+    }
+
+    /**
+      * getRoom
+      *
+      * Return the room model.
+      *
+      * @returns Room
+      */
     public function getRoom()
     {
         return $this->_room;
     }
 
-    public function getStudent()
+    /**
+      * getStudents
+      *
+      * Return an array of students assigned to room
+      *
+      * @returns array Array of Student models
+      */
+    public function getStudents()
     {
-        return $this->_student;
-    }
+        $students = array();
 
-    public function getGender()
-    {
-        if ($this->_student == NULL) {
-            return NULL;
+        foreach ($this->_assignments as $assignment) {
+            array_push($students, $assignment->getStudent());
         }
 
-        return $this->_student->getGender();
+        return $students;
     }
 
+    /**
+      * getGender
+      *
+      * Return the gender assigned to this room.
+      *
+      * @returns string Gender, either 'male', 'female', or NULL
+      */
+    public function getGender()
+    {
+        return $this->_gender;
+    }
+
+    /**
+      * getRoomName
+      *
+      * Returns a string unique to this room
+      *
+      * @returns string Room Name
+      */
     public function getRoomName()
     {
         $room_name = $this->_room->getName();
