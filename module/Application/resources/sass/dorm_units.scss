@@ -1,9 +1,9 @@
-.male-room {
+.panel-primary.male-unit {
     background: $male-room-background;
     color: $male-room-text;
 }
 
-.female-room {
+.panel-primary.female-unit {
     background: $female-room-background;
     color: $female-room-text;
 }
@@ -18,8 +18,52 @@
     color: $female-room-partial-text;
 }
 
-.unoccupied-room {
+.panel-primary.unoccupied-unit {
     background: $unoccupied-room-background;
     color: $unoccupied-room-text;
 }
 
+.dorm-unit-common {
+    min-height: 4em;
+    border: thin solid $light-gray;
+    line-height: 3em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dorm-room {
+    border: thin solid $light-gray;
+    padding: 5px;
+}
+
+.dorm-room-name {
+    width: 100%;
+    font-weight: bold;
+}
+
+.student {
+    width: 100%;
+
+    line-height: 2em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 1px;
+    padding: 1px;
+    border: thin inset $light-gray;
+    border-radius: 4px;
+
+    a {
+        text-decoration: none;
+        color: $black;
+    }
+
+    &.available {
+        background: $white;
+        color: $black;
+    }
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: $white;
+}

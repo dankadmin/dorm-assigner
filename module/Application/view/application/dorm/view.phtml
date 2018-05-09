@@ -1,0 +1,73 @@
+<h2>Dorm <?php echo $this->dorm->getName() ; ?></h2>
+
+<?php
+
+foreach ($this->floors as $floor => $units) {
+?>
+<div class="dorm-floor">
+    <h3>Floor <?php echo $floor;?></h3>
+    <div class="row">
+    <?php
+    foreach ($units as $unit => $data) {
+        $gender = $data['gender'];
+        $rooms = $data['rooms'];
+        ?>
+        <div class="col-md-3">
+            <div class="panel panel-primary <?php echo $gender; ?>-unit">
+
+                <div class="panel-heading dorm-unit-name">
+                    <h4>Unit <?php echo $unit; ?></h4>
+                </div>
+        <?php
+        foreach ($rooms as $room) {
+            ?>
+                <div class="col-md-6 dorm-room<?php
+                    if ($room->isFull()) {
+                        echo " full-room";
+                    }
+                ?>">
+                    <div class="dorm-room-name"><?php echo $room->getRoomName(); ?></div>
+            <?php
+            $students = $room->getStudents();
+            $student_slot = 0;
+            foreach ($students as $student) {
+                $student_slot++;
+                ?>
+                    <a href="<?php
+                        echo $this->url(
+                            'viewStudent',
+                            array('studentId' => $student->getId())
+                        )
+                    ?>">
+                    <div class="student occupied <?php echo $gender; ?>-room-partial">
+                        <?php
+                            echo $student->getFirstName() . " " . $student->getLastName();
+                    ?></div></a>
+                <?php
+            }
+            for ($i = $student_slot; $i < 2; $i++) {
+                ?>
+                    <div class="student available">Available</div>
+                <?php
+            }
+            ?>
+                </div>
+            <?php
+        }
+        ?>
+                <div class="col-md-12 dorm-unit-common">
+                    Common area
+                </div>
+
+                &nbsp;
+            </div>
+        </div>
+    <?php
+    }
+    ?>
+    </div>
+</div>
+<?php
+}
+
+?>

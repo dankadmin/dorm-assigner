@@ -1,8 +1,8 @@
-.male-room {
+.panel-primary.male-unit {
   background: #59aeff;
   color: #ffffff; }
 
-.female-room {
+.panel-primary.female-unit {
   background: #fc3a4a;
   color: #ffffff; }
 
@@ -14,8 +14,43 @@
   background: #fcc9ce;
   color: #101010; }
 
-.unoccupied-room {
-  background: #837575;
+.panel-primary.unoccupied-unit {
+  background: #989191;
+  color: #ffffff; }
+
+.dorm-unit-common {
+  min-height: 4em;
+  border: thin solid #dedede;
+  line-height: 3em;
+  text-align: center;
+  font-weight: bold; }
+
+.dorm-room {
+  border: thin solid #dedede;
+  padding: 5px; }
+
+.dorm-room-name {
+  width: 100%;
+  font-weight: bold; }
+
+.student {
+  width: 100%;
+  line-height: 2em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: 1px;
+  padding: 1px;
+  border: thin inset #dedede;
+  border-radius: 4px; }
+  .student a {
+    text-decoration: none;
+    color: #101010; }
+  .student.available {
+    background: #ffffff;
+    color: #101010; }
+
+.navbar-inverse .navbar-nav > li > a {
   color: #ffffff; }
 
 body {
@@ -25,42 +60,42 @@ body {
   color: #101010; }
 
 strong {
-  color: #411147; }
+  color: #751281; }
 
 .panel-primary {
   background: #ffffff;
   color: #101010;
-  border-color: #411147; }
+  border-color: #751281; }
   .panel-primary .panel-heading {
-    background: #411147;
+    background: #751281;
     color: #ffffff;
-    border-color: #411147; }
+    border-color: #751281; }
   .panel-primary .panel-title {
     color: #ffffff; }
 
 .btn-primary {
-  background-color: #411147;
+  background-color: #751281;
   color: #ffffff;
-  border-color: #411147;
-  background-image: -moz-linear-gradient(top, #101010, #411147);
-  background-image: -ms-linear-gradient(top, #101010, #411147);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#101010), to(#411147));
-  background-image: -webkit-linear-gradient(top, #101010, #411147);
-  background-image: -o-linear-gradient(top, #101010, #411147);
-  background-image: linear-gradient(top, #101010, #411147);
+  border-color: #751281;
+  background-image: -moz-linear-gradient(top, #101010, #751281);
+  background-image: -ms-linear-gradient(top, #101010, #751281);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#101010), to(#751281));
+  background-image: -webkit-linear-gradient(top, #101010, #751281);
+  background-image: -o-linear-gradient(top, #101010, #751281);
+  background-image: linear-gradient(top, #101010, #751281);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$button-fade', endColorstr='$button-background', GradientType=0);
   border-radius: 4px; }
   .btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
-    background-color: #411147; }
+    background-color: #751281; }
 
 .jumbotron {
   background-color: #ffffff;
   color: #101010; }
 
 .navbar-inverse {
-  background-color: #411147;
+  background-color: #751281;
   color: #ffffff;
-  background-image: linear-gradient(to bottom, #411147 0%, #210527 100%);
+  background-image: linear-gradient(to bottom, #751281 0%, #521058 100%);
   background-repeat: repeat-x; }
   .navbar-inverse div.container a.navbar-brand, .navbar-inverse div.container a.navbar-brand > img {
     display: inline;
