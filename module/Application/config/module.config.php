@@ -1,5 +1,26 @@
 <?php
 
+$dorm_routes = array();
+$dorms = array(
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+);
+
+foreach ($dorms as $id => $name) {
+    array_push(
+        $dorm_routes,
+        array(
+            'label' => "Dorm $name",
+            'route' => 'viewDorm',
+            'params' => array('dormId' => $id),
+        )
+    );
+}
+
 return array(
     'router' => array(
         'routes' => array(
@@ -98,6 +119,29 @@ return array(
                     ),
                 ),
             ),
+            'dorm' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/dorm',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Dorm',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'viewDorm' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/dorm/view/:dormId',
+                    'constraints' => array(
+                        'dormId' => '[0-9]+|[A-Z]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Dorm',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -134,6 +178,7 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Student' => 'Application\Controller\StudentController',
+            'Application\Controller\Dorm' => 'Application\Controller\DormController',
         ),
     ),
     'view_helpers' => array(
@@ -192,6 +237,11 @@ return array(
                         'route' => 'addStudent',
                     ),
                 ),
+            ),
+            array(
+                'label' => 'Dorm',
+                'route' => 'dorm',
+                'pages' => $dorm_routes,
             ),
         ),
     ),

@@ -73,14 +73,6 @@ class AssignmentForm extends Form
                 array('name' => 'StripTags'),
                 array('name' => 'StringTrim'),
             ),
-            'validators' => array(
-                array(
-                    'name'    => 'Application\Validator\SimpleString',
-                    'options' => array(
-                        'encoding' => 'UTF-8',
-                    ),
-                ),
-            ),
         ));
 
 
@@ -122,42 +114,6 @@ class AssignmentForm extends Form
         $valid = parent::isValid();
         return true;
 
-        /*
-        $data = $this->getData();
-
-        $student_errors = $this->get('student_num')->getMessages();
-
-        $first_initial = strtoupper(substr($data['first_name'], 0, 1));
-        $last_initial = strtoupper(substr($data['last_name'], 0, 1));
-        $student_num = $data['student_num'];
-
-        if (
-            ! preg_match(
-                '/^' . $first_initial . $last_initial . '[0-9]{6}$/',
-                $student_num
-            )
-        ) {
-            array_push($student_errors, 'Student Number does not include first and last initials.');
-            $valid = false;
-        }
-
-        if ($this->_is_update) {
-            return $valid;
-        }
-
-        $student_query = new DormStudentQuery();
-
-        if ($student_query->findByStudentNum($student_num) != NULL) {
-            array_push(
-                $student_errors,
-                "Student already exists with number '$student_num'."
-            );
-            $valid = false;
-        }
-
-        $this->get('student_num')->setMessages($student_errors);
-        return $valid;
-        */
     }
 }
 
